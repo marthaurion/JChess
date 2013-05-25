@@ -1,17 +1,20 @@
 public class Square {
     private char file; //columns marked a-h
     private int rank; //rows marked 1-8
-    private Piece piece; //null if empty
+    private int x;
+    private int y;
     
     //construct with array indices?
-    public Square(Piece p, int x, int y) {
-        piece = p;
-        rank = x+1;
-        file = (char)('a'+y);
+    public Square(int x, int y) {
+        this.x = x;
+        this.y = y;
+        //these are just for display
+        rank = y+1;
+        file = (char)('a'+x);
     }
     
     //returns location in algebraic notation
-    public String getLocation() {
+    public String getNotation() {
     	String st = "";
     	st = st+file+rank;
     	return st;
@@ -26,31 +29,11 @@ public class Square {
     	return rank;
     }
     
-    public Piece getPiece() {
-    	return piece;
+    public int getX() {
+    	return x;
     }
     
-    //deletes piece on square
-    public void removePiece() {
-    	piece = null;
-    }
-    
-    //puts new piece on square
-    public void addPiece(Piece p) {
-    	piece = p;
-    }
-    
-    //checks if square is occupied
-    public boolean hasPiece() {
-    	return (piece == null);
-    }
-    
-    public void movePiece(Square dest) {
-    	if(dest.hasPiece()) {
-    		//capture logic goes here
-    	}
-    	
-    	dest.addPiece(this.getPiece());
-    	this.removePiece();
+    public int getY() {
+    	return y;
     }
 }

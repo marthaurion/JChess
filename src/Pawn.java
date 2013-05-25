@@ -1,9 +1,19 @@
 
 public class Pawn implements Piece {
 	private PieceColor color;
+	private Square location;
 	
-	public Pawn(PieceColor c) {
+	public Pawn(int x, int y, PieceColor c) {
 		color = c;
+		location = new Square(x, y);
+	}
+	
+	public Square getLocation() {
+		return location;
+	}
+	
+	public String getNotation() {
+		return location.getNotation();
 	}
 	
     public int getValue() {
@@ -24,6 +34,6 @@ public class Pawn implements Piece {
     }
     
     public boolean acceptVisitor(PieceVisitor p, Move m) {
-    	return p.visitPawn(m);
+    	return p.visitPawn(m, this);
     }
 }

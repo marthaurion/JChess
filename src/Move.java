@@ -1,37 +1,41 @@
 
 public class Move {
 	//this is the object that will be sent in a multiplayer form
-	private Square source;
-	private Square dest;
+	private Piece source;
+	private Piece dest;
 	
-	public Move(Square src, Square d) {
-		source = src;
+	public Move(Piece s, Piece d) {
+		source = s;
 		dest = d;
 	}
 	
 	//get methods
-	public Square getSource() {
+	public Piece getSource() {
 		return source;
 	}
 	
-	public Square getDest() {
+	public Piece getDest() {
 		return dest;
 	}
 	
-	public Piece movedPiece() {
-		return source.getPiece();
-	}
-	
-	//returns null if square is empty
-	public Piece capPiece() {
-		if(dest.hasPiece()) return dest.getPiece();
-		else return null;
-	}
-	
 	public String notation() {
-		String st = "";
-		st += source.getPiece().getID();
-		st += source.getLocation();
-		return st;
+		StringBuilder st = new StringBuilder();
+		st.append(source.getID());
+		st.append(source.getLocation().getNotation());
+		return st.toString();
+	}
+	
+	//for passing the message as a string
+	public String toString() {
+		StringBuilder st = new StringBuilder();
+		st.append(Integer.toString(source.getLocation().getX()));
+		st.append(",");
+		st.append(Integer.toString(source.getLocation().getY()));
+		st.append("|");
+		st.append(Integer.toString(dest.getLocation().getX()));
+		st.append(",");
+		st.append(Integer.toString(dest.getLocation().getY()));
+		
+		return st.toString();
 	}
 }
