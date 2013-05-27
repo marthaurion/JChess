@@ -12,6 +12,10 @@ public class Pawn implements Piece {
 		return location;
 	}
 	
+	public void setLocation(Square s) {
+		location = s;
+	}
+	
 	public String getNotation() {
 		return location.getNotation();
 	}
@@ -35,5 +39,21 @@ public class Pawn implements Piece {
     
     public boolean acceptVisitor(PieceVisitor p, Move m) {
     	return p.visitPawn(m, this);
+    }
+    
+    
+    //these two methods are specific only to the pawn
+    public int advance() {
+    	if(color == PieceColor.White) {
+    		return 1;
+    	}
+    	else return -1;
+    }
+    
+    public int start() {
+    	if(color == PieceColor.White){
+    		return 1;
+    	}
+    	else return 6;
     }
 }

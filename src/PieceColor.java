@@ -1,3 +1,3 @@
 public enum PieceColor {
-	Black, White
+	Black, White, None
 }
