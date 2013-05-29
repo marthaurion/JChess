@@ -3,11 +3,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
-public class Display implements ActionListener, Observer {
+public class Display implements Observer {
 	private Controller control;
 	private Model model;
 	private JFrame frame;
@@ -80,9 +78,4 @@ public class Display implements ActionListener, Observer {
 		
 		return p;
 	}
-	
-	public void actionPerformed(ActionEvent e) {
-		
-	}
-
 }
