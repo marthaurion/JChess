@@ -1,8 +1,10 @@
 public class Board {
     private Piece[][] board;
     private PieceColor turn;
+    private Player player;
     
-    public Board() {
+    public Board(PieceColor c) {
+    	player = new Player(c);
         board = new Piece[8][8];
         turn = PieceColor.White;
     }
@@ -75,7 +77,7 @@ public class Board {
     
     public boolean tryMove(Move m, PieceVisitor v) {
     	//checks if the right player is moving
-    	if(m.getSource().getColor() != turn) return false;
+    	if(player.getColor() != turn) return false;
     	
     	//now does the visitor check
     	return m.getSource().acceptVisitor(v, m);

@@ -6,8 +6,8 @@ public class Model {
 	private ArrayList<Observer> obs;
 	private PieceVisitor visitor;
 	
-	public Model() {
-		board = new Board();
+	public Model(PieceColor c) {
+		board = new Board(c);
 		board.newGame();
 		obs = new ArrayList<Observer>();
 		visitor = new PieceVisitor(this);

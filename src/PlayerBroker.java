@@ -7,6 +7,16 @@ import java.net.Socket;
 
 public class PlayerBroker {
 	
+	private GameServerBroker broker;
+	
+	public PlayerBroker() {
+		broker = null;
+	}
+	
+	public void attachServer(GameServerBroker b) {
+		broker = b;
+	}
+	
 	public void sendMessage(String st) throws IOException {
 		Socket sock = new Socket("localhost", 8484);
 		PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
