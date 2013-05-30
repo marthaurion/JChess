@@ -15,5 +15,6 @@ public class Player {
 	public boolean canCastle() {
 		return castle;
 	}
+	
+	
 }
- 

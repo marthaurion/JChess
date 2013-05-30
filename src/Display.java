@@ -11,8 +11,8 @@ public class Display implements Observer {
 	private JFrame frame;
 	private JPanel panel;
 	
-	public Display(Model m, Controller c) {
-		control = c;
+	public Display(Model m) {
+		control = null;
 		model = m;
 	}
 	
@@ -28,6 +28,11 @@ public class Display implements Observer {
 		frame.repaint();
 	}
 	
+	public void makeController() {
+		control = new Controller(model);
+		model.attach(control);
+	}
+	
 	public void endGame(PieceColor c) {
 		JOptionPane.showMessageDialog(frame, "Game Over. "+c.toString()+" wins!");
 		frame.dispose();
@@ -37,6 +42,9 @@ public class Display implements Observer {
 	 * Initialize the contents of the frame.
 	 */
 	public void initialize() {
+		//create a controller for the view
+		makeController();
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 794, 505);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
