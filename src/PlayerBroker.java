@@ -8,26 +8,36 @@ import java.net.Socket;
 public class PlayerBroker {
 	
 	private GameServerBroker broker;
+	private Socket socket;
 	
 	public PlayerBroker() {
 		broker = null;
+		socket = null;
 	}
 	
 	public void attachServer(GameServerBroker b) {
 		broker = b;
 	}
 	
-	public void sendMessage(String st) throws IOException {
-		Socket sock = new Socket("localhost", 8484);
-		PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
-		BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+	public void startGame(PieceColor c) throws IOException {
+		if(broker == null) return;
 		
-		String fromServer = "";
-		while(!fromServer.equals("Done")) {
-			out.write(st);
-			fromServer = in.readLine();
-		}
+		socket = new Socket(broker.getIP(), 8484);
+	}
+	
+	public PlayerAction sendMessage(PlayerAction p) throws IOException {
 		
-		sock.close();
+		
+		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+		BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		
+		out.write(p.toString());
+		String fromServer = in.readLine();
+		
+		return PlayerAction.fromString(fromServer);
+	}
+	
+	public void endGame(PieceColor c) throws IOException {
+		socket.close();
 	}
 }

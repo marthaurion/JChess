@@ -159,7 +159,40 @@ public class PieceVisitor implements Observer {
 	*/
 	
 	public boolean visitKing(Move m, King k) {
-		return false;
+		//similar to the knight because there are only 8 possible moves
+		ArrayList<Square> list = new ArrayList<Square>();
+		int x = k.getLocation().getX();
+		int y = k.getLocation().getY();
+		
+		//add surrounding squares
+		list.add(new Square(x+1, y+1));
+		list.add(new Square(x+1, y));
+		list.add(new Square(x+1, y-1));
+		
+		list.add(new Square(x, y+1));
+		list.add(new Square(x, y-1));
+		
+		list.add(new Square(x-1, y+1));
+		list.add(new Square(x-1, y));
+		list.add(new Square(x-1, y-1));
+		
+		
+		//remove the moves that aren't legal
+		for(int i = 0; i < list.size(); i++) {
+			x = list.get(i).getX();
+			y = list.get(i).getY();
+			
+			if(!onBoard(x, y)) {
+				list.remove(i);
+				i--;
+			}
+			else if(!isEmpty(x, y) && !isEnemy(x, y, k)) {
+				list.remove(i);
+				i--;
+			}
+		}
+		
+		return checkList(m, list);
 	}
 	
 	

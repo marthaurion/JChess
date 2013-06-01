@@ -4,7 +4,7 @@ public class Board {
     private Player player;
     
     public Board(PieceColor c) {
-    	player = new Player(c);
+    	player = new Player(c, this);
         board = new Piece[8][8];
         turn = PieceColor.White;
     }
