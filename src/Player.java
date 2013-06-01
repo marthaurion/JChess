@@ -7,9 +7,12 @@ public class Player {
 	private Board board;
 	private boolean castle;
 	
-	public Player(PieceColor c, Board b) {
+	public Player(PieceColor c, Board b) throws IOException {
 		color = c;
 		proxy = new PlayerProxy(this);
+		PlayerBroker broker = new PlayerBroker();
+		broker.startGame(c);
+		proxy.setBroker(broker);
 		castle = true;
 		board = b;
 	}

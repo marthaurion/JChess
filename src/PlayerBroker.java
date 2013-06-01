@@ -11,7 +11,7 @@ public class PlayerBroker {
 	private Socket socket;
 	
 	public PlayerBroker() {
-		broker = null;
+		broker = new GameServerBroker("68.51.78.38");
 		socket = null;
 	}
 	
@@ -26,13 +26,14 @@ public class PlayerBroker {
 	}
 	
 	public PlayerAction sendMessage(PlayerAction p) throws IOException {
-		
-		
 		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 		BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		
 		out.write(p.toString());
 		String fromServer = in.readLine();
+		while(fromServer == null) {
+			fromServer = in.readLine();
+		}
 		
 		return PlayerAction.fromString(fromServer);
 	}

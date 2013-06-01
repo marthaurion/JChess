@@ -22,15 +22,25 @@ public class GameServerThread extends Thread {
 			PrintWriter out2 = new PrintWriter(p1.getOutputStream(), true);
 			BufferedReader in2 = new BufferedReader(new InputStreamReader(p1.getInputStream()));
 			
-			String line = in1.readLine();
+			String line = "";
 			
 			//just blindly sends through unless it gets a stopping case
 			while(line != null && !line.contains("Resign")) {
+				line = null;
+				while(line == null) {
+					line = in1.readLine();
+				}
+				System.out.println(line);
 				out2.write(line);
-				line = in2.readLine();
-				if(line == null || line.contains("Resign")) {
+				line = null;
+				while(line == null) {
+					line = in2.readLine();
+				}
+				
+				if(line.contains("Resign")) {
 					break;
 				}
+				System.out.println(line);
 				out1.write(line);
 				line = in1.readLine();
 			}
