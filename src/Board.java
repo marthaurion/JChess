@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 public class Board {
     private Piece[][] board;
     private PieceColor turn;
@@ -84,7 +86,7 @@ public class Board {
     }
     
     //should only be called after tryMove returns true
-    public void makeMove(Move m) {
+    public void makeMove(Move m) throws IOException {
     	int x = m.getSource().getLocation().getX();
     	int y = m.getSource().getLocation().getY();
     	
@@ -100,5 +102,7 @@ public class Board {
     	
     	if(turn == PieceColor.White) turn = PieceColor.Black;
     	else turn = PieceColor.White;
+    	
+    	if(m.getSource().getColor() == player.getColor()) player.sendMove(m);
     }
 }

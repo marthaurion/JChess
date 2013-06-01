@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -37,7 +38,7 @@ public class Model {
 		return board.tryMove(m, visitor);
 	}
 	
-	public void makeMove(Move m) {
+	public void makeMove(Move m) throws IOException {
 		board.makeMove(m);
 		notifyObs();
 	}

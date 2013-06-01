@@ -32,7 +32,7 @@ public class Player {
 	}
 	
 	//theoretically the other player should have checked the move before sending it
-	public void getMove(Move m) {
+	public void getMove(Move m) throws IOException {
 		board.makeMove(m);
 	}
 	

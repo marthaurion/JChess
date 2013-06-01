@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 public class Controller implements ActionListener, Observer {
@@ -58,9 +59,14 @@ public class Controller implements ActionListener, Observer {
 						if(dest.getName().equals("King")) {
 							//end game
 							model.endGame(src.getColor());
+						} else {
+							try {
+								model.makeMove(m);
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 						}
-						
-						else model.makeMove(m);
 					}
 				}
 			}
