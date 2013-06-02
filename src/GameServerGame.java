@@ -11,6 +11,7 @@ public class GameServerGame {
 		p2.addGame(this);
 		p1.start();
 		p2.start();
+		System.out.println("Player threads started");
 		current = p1;
 	}
 	
