@@ -49,7 +49,7 @@ public class Move {
 	
 	public static Move fromString(String s) {
 		String[] toks = s.split("\\|");
-		
+		System.out.println(toks);
 		String[] src = toks[1].split(",");
 		int x = Integer.parseInt(src[0]);
 		int y = Integer.parseInt(src[1]);
