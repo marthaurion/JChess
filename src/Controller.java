@@ -48,7 +48,6 @@ public class Controller implements ActionListener, Observer {
 					Piece dest = model.getData().getPiece(x, y);
 					Move m = new Move(src, dest);
 					boolean flag = model.tryMove(m);
-					System.out.println(m.toString());
 					//reset now that the move has been registered
 					sourceX = -1;
 					sourceY = -1;

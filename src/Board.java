@@ -87,6 +87,9 @@ public class Board {
     
     //should only be called after tryMove returns true
     public void makeMove(Move m) throws IOException {
+    	//send move first
+    	if(player.getColor() == turn) player.sendMove(m);
+    	
     	int x = m.getSource().getLocation().getX();
     	int y = m.getSource().getLocation().getY();
     	
@@ -99,8 +102,6 @@ public class Board {
     	
     	temp.setLocation(new Square(x, y));
     	board[y][x] = temp;
-    	
-    	if(player.getColor() == turn) player.sendMove(m);
     	
     	if(turn == PieceColor.White) turn = PieceColor.Black;
     	else turn = PieceColor.White;
