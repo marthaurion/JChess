@@ -8,6 +8,7 @@ import java.net.Socket;
 public class GameServerThread extends Thread {
 	private Socket socket;
 	private GameServerGame game;
+	private PieceColor color;
 	private GameServerThread opp;
 	private PrintWriter output;
 	private BufferedReader input;
@@ -15,12 +16,12 @@ public class GameServerThread extends Thread {
 	public GameServerThread(Socket s, PieceColor c) {
 		super("GameServerThread");
 		socket = s;
+		color = c;
 		opp = null;
 		game = null;
 		try {
 			output = new PrintWriter(socket.getOutputStream(), true);
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			output.write(c.toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,6 +46,8 @@ public class GameServerThread extends Thread {
 	
 	public void run() {
 		try {
+			output.write(color.toString());
+			
 			while(true) {
 				String line = input.readLine();
 				while(!game.canMove(line, this));
