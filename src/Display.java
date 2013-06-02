@@ -3,6 +3,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.io.IOException;
 
 
 public class Display implements Observer {
@@ -40,8 +41,9 @@ public class Display implements Observer {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws IOException 
 	 */
-	public void initialize() {
+	public void initialize() throws IOException {
 		//create a controller for the view
 		makeController();
 		

@@ -22,8 +22,9 @@ public class Model {
 		return board;
 	}
 	
-	public void waitMove() {
-		
+	public void waitMove() throws IOException {
+		board.waitMove();
+		notifyObs();
 	}
 	
 	public void notifyObs() {
