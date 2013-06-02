@@ -31,18 +31,12 @@ public class PlayerBroker {
 		output = new PrintWriter(socket.getOutputStream(), true);
 		System.out.println("Reading Color");
 		String color = input.readLine();
-		while(color == null) {
-			color = input.readLine();
-		}
 		System.out.println(color);
 		return PieceColor.fromString(color);
 	}
 	
 	public PlayerAction getMove() throws IOException {
 		String fromServer = input.readLine();
-		while(fromServer == null) {
-			fromServer = input.readLine();
-		}
 		System.out.println(fromServer);
 		return PlayerAction.fromString(fromServer);
 	}
@@ -51,9 +45,6 @@ public class PlayerBroker {
 		output.println(p.toString());
 		System.out.println(p.toString());
 		String fromServer = input.readLine();
-		while(fromServer == null) {
-			fromServer = input.readLine();
-		}
 		System.out.println(fromServer);
 		return PlayerAction.fromString(fromServer);
 	}
