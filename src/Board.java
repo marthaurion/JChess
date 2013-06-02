@@ -100,9 +100,9 @@ public class Board {
     	temp.setLocation(new Square(x, y));
     	board[y][x] = temp;
     	
+    	if(player.getColor() == turn) player.sendMove(m);
+    	
     	if(turn == PieceColor.White) turn = PieceColor.Black;
     	else turn = PieceColor.White;
-    	
-    	if(player.getColor() == turn) player.sendMove(m);
     }
 }
