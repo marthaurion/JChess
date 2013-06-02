@@ -14,10 +14,6 @@ public class Player {
 		color = proxy.startGame();
 		castle = true;
 		board = b;
-		if(color == PieceColor.Black) {
-			Move m = proxy.getMove();
-			board.makeMove(m);
-		}
 	}
 	
 	public PieceColor getColor() {
@@ -35,6 +31,10 @@ public class Player {
 		else {
 			proxy.sendResign(color);
 		}
+	}
+	
+	public Move waitMove() throws IOException {
+		return proxy.getMove();
 	}
 	
 	//theoretically the other player should have checked the move before sending it

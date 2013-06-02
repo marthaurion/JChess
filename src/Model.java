@@ -22,6 +22,10 @@ public class Model {
 		return board;
 	}
 	
+	public void waitMove() {
+		
+	}
+	
 	public void notifyObs() {
 		//update every observer
 		for(int i = 0; i < obs.size(); i++) {
