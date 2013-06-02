@@ -49,19 +49,19 @@ public class Move {
 	
 	public static Move fromString(String s) {
 		String[] toks = s.split("\\|");
-		for(int i = 0; i < toks.length; i++) {
-			System.out.println(toks[i]);
-		}
 		String[] src = toks[1].split(",");
 		int x = Integer.parseInt(src[0]);
 		int y = Integer.parseInt(src[1]);
 		
+		System.out.println(toks[0]+" "+x+" "+y+" "+toks[2]);
 		Piece p1 = createPiece(toks[0], x, y, PieceColor.fromString(toks[2]));
 		
 		String[] d = toks[4].split(",");
 		x = Integer.parseInt(d[0]);
 		y = Integer.parseInt(d[1]);
 		
+		
+		System.out.println(toks[3]+" "+x+" "+y+" "+toks[5]);
 		Piece p2 = createPiece(toks[3], x, y, PieceColor.fromString(toks[5])); 
 		
 		
