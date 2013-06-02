@@ -14,6 +14,10 @@ public class Player {
 		color = proxy.startGame();
 		castle = true;
 		board = b;
+		if(color == PieceColor.Black) {
+			Move m = proxy.getMove();
+			board.makeMove(m);
+		}
 	}
 	
 	public PieceColor getColor() {

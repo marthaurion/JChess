@@ -38,6 +38,15 @@ public class PlayerBroker {
 		return PieceColor.fromString(color);
 	}
 	
+	public PlayerAction getMove() throws IOException {
+		String fromServer = input.readLine();
+		while(fromServer == null) {
+			fromServer = input.readLine();
+		}
+		System.out.println(fromServer);
+		return PlayerAction.fromString(fromServer);
+	}
+	
 	public PlayerAction sendMessage(PlayerAction p) throws IOException {
 		output.println(p.toString());
 		System.out.println(p.toString());
