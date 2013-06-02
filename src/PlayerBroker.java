@@ -29,9 +29,9 @@ public class PlayerBroker {
 		socket = new Socket(broker.getIP(), 8484);
 		input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		output = new PrintWriter(socket.getOutputStream(), true);
-		
+		System.out.println("Reading Color");
 		String color = input.readLine();
-		System.out.println(color.toString());
+		System.out.println(color);
 		return PieceColor.fromString(color);
 	}
 	
