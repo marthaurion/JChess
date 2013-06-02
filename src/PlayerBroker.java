@@ -39,12 +39,13 @@ public class PlayerBroker {
 	}
 	
 	public PlayerAction sendMessage(PlayerAction p) throws IOException {
-		output.write(p.toString());
+		output.println(p.toString());
+		System.out.println(p.toString());
 		String fromServer = input.readLine();
 		while(fromServer == null) {
 			fromServer = input.readLine();
 		}
-		
+		System.out.println(fromServer);
 		return PlayerAction.fromString(fromServer);
 	}
 	

@@ -103,6 +103,6 @@ public class Board {
     	if(turn == PieceColor.White) turn = PieceColor.Black;
     	else turn = PieceColor.White;
     	
-    	if(m.getSource().getColor() == player.getColor()) player.sendMove(m);
+    	player.sendMove(m);
     }
 }
