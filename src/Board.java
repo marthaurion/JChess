@@ -88,8 +88,10 @@ public class Board {
     //should only be called after tryMove returns true
     public void makeMove(Move m) throws IOException {
     	//send move first
-    	if(player.getColor() == turn) player.sendMove(m);
-    	
+    	if(player.getColor() == turn) {
+    		player.sendMove(m);
+    		System.out.println("Move sent.");
+    	}
     	
     	int x = m.getSource().getLocation().getX();
     	int y = m.getSource().getLocation().getY();

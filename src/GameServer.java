@@ -36,13 +36,11 @@ class Game {
     //The current player.
     Player currentPlayer;
 
-    public synchronized boolean legalMove(String s, Player player) {
+    public synchronized void sendMove(String s, Player player) {
         if (player == currentPlayer) {
             currentPlayer = currentPlayer.opponent;
             currentPlayer.otherPlayerMoved(s);
-            return true;
         }
-        return false;
     }
 
     class Player extends Thread {
@@ -89,9 +87,9 @@ class Game {
                     String command = input.readLine();
                     System.out.println(command);
                     if (!command.contains("Resign")) {
-                        while(!legalMove(command, this));
+                        sendMove(command, this);
                     } else {
-                    	while(!legalMove(command, this));
+                    	sendMove(command, this);
                         return;
                     }
                 }
