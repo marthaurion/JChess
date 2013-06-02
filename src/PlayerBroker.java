@@ -31,6 +31,7 @@ public class PlayerBroker {
 		output = new PrintWriter(socket.getOutputStream(), true);
 		
 		String color = input.readLine();
+		System.out.println(color.toString());
 		return PieceColor.fromString(color);
 	}
 	
