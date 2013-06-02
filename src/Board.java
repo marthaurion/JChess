@@ -5,8 +5,8 @@ public class Board {
     private PieceColor turn;
     private Player player;
     
-    public Board(PieceColor c) throws IOException {
-    	player = new Player(this);
+    public Board(PieceColor c, Model m) throws IOException {
+    	player = new Player(m);
         board = new Piece[8][8];
         turn = PieceColor.White;
     }

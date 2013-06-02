@@ -8,7 +8,7 @@ public class Model {
 	private PieceVisitor visitor;
 	
 	public Model(PieceColor c) throws IOException {
-		board = new Board(c);
+		board = new Board(c, this);
 		board.newGame();
 		obs = new ArrayList<Observer>();
 		visitor = new PieceVisitor(this);
