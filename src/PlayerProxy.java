@@ -27,13 +27,7 @@ public class PlayerProxy {
 	public void sendMove(Move m) throws IOException {
 		PlayerAction action = new PlayerAction(m.getSource().getColor());
 		action.setMove(m);
-		PlayerAction receive = broker.sendMessage(action);
-		if(receive.getAction() != null && receive.getAction().equals("Resign")) {
-			play.endGame(play.getColor());
-		}
-		else {
-			play.getMove(receive.getMove());
-		}
+		broker.sendMessage(action);
 	}
 	
 	public void sendResign(PieceColor c) throws IOException {
