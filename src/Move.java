@@ -53,19 +53,17 @@ public class Move {
 		int x = Integer.parseInt(src[0]);
 		int y = Integer.parseInt(src[1]);
 		
-		System.out.println(toks[0]+" "+x+" "+y+" "+toks[2]);
 		Piece p1 = createPiece(toks[0], x, y, PieceColor.fromString(toks[2]));
 		
 		String[] d = toks[4].split(",");
 		x = Integer.parseInt(d[0]);
 		y = Integer.parseInt(d[1]);
 		
-		
-		System.out.println(toks[3]+" "+x+" "+y+" "+toks[5]);
 		Piece p2 = createPiece(toks[3], x, y, PieceColor.fromString(toks[5])); 
 		
-		
-		return new Move(p1, p2);
+		Move m = new Move(p1, p2);
+		System.out.println(m.toString());
+		return m;
 	}
 	
 	private static Piece createPiece(String s, int x, int y, PieceColor c) {
