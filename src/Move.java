@@ -62,7 +62,6 @@ public class Move {
 		Piece p2 = createPiece(toks[3], x, y, PieceColor.fromString(toks[5])); 
 		
 		Move m = new Move(p1, p2);
-		System.out.println(m.toString());
 		return m;
 	}
 	
