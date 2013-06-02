@@ -15,6 +15,10 @@ public class PlayerProxy {
 		broker = b;
 	}
 	
+	public PieceColor startGame() throws IOException {
+		return broker.startGame();
+	}
+	
 	public void sendMove(Move m) throws IOException {
 		PlayerAction action = new PlayerAction(m.getSource().getColor());
 		action.setMove(m);

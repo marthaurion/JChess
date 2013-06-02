@@ -19,9 +19,12 @@ public class GameServerBroker {
 		ServerSocket socket = new ServerSocket(8484);
 		
 		while(true) {
+			
 			Socket p1 = socket.accept();
 			Socket p2 = socket.accept();
-			new GameServerThread(p1, p2).start();
+			GameServerThread g1 = new GameServerThread(p1, PieceColor.White);
+			GameServerThread g2 = new GameServerThread(p2, PieceColor.Black);
+			new GameServerGame(g1, g2);
 		}
 		
 	}
