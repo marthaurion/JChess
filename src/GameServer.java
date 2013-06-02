@@ -91,6 +91,7 @@ class Game {
                 // Repeatedly get commands from the client and process them.
                 while (true) {
                     String command = input.readLine();
+                    System.out.println(command);
                     if (!command.contains("Resign")) {
                         legalMove(command, this);
                     } else {
