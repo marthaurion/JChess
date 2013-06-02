@@ -46,14 +46,16 @@ public class GameServerThread extends Thread {
 	
 	public void run() {
 		try {
-			output.write(color.toString());
-			System.out.println("Sending "+color.toString());
+			String line = null;
+			while(line == null) {
+				output.write(color.toString());
+				line = input.readLine();
+			}
 			
 			while(true) {
-				System.out.println("Reading");
-				String line = input.readLine();
 				while(!game.canMove(line, this));
 				System.out.println("Line Processed");
+				line = input.readLine();
 				if(line.contains("Resign")) {
 					break;
 				}
