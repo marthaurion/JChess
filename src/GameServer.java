@@ -93,9 +93,9 @@ class Game {
                     String command = input.readLine();
                     System.out.println(command);
                     if (!command.contains("Resign")) {
-                        legalMove(command, this);
+                        while(!legalMove(command, this));
                     } else {
-                    	legalMove(command, this);
+                    	while(!legalMove(command, this));
                         return;
                     }
                 }
