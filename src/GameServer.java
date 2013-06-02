@@ -30,14 +30,10 @@ public class GameServer {
     }
 }
 
-/**
- * A two-player game.
- */
+//A two-player game.
 class Game {
 
-    /**
-     * The current player.
-     */
+    //The current player.
     Player currentPlayer;
 
     public synchronized boolean legalMove(String s, Player player) {

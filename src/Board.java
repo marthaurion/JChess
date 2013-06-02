@@ -90,6 +90,7 @@ public class Board {
     	//send move first
     	if(player.getColor() == turn) player.sendMove(m);
     	
+    	
     	int x = m.getSource().getLocation().getX();
     	int y = m.getSource().getLocation().getY();
     	
