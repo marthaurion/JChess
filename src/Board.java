@@ -123,5 +123,6 @@ public class Board {
     
     public void endGame(PieceColor c) {
     	if(player.getColor() == c) player.endGame(c);
+    	else System.exit(0);
     }
 }
