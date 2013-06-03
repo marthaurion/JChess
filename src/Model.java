@@ -11,6 +11,7 @@ public class Model {
 		board = new Board(c, this);
 		board.newGame();
 		obs = new ArrayList<Observer>();
+		obs.add(board.getPlayer());
 		visitor = new PieceVisitor(this);
 	}
 	

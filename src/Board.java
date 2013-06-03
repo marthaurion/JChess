@@ -15,6 +15,10 @@ public class Board {
     	return board;
     }
     
+    public Player getPlayer() {
+    	return player;
+    }
+    
     //get the piece based on rank-file notation (such as g8)
     public Piece getPiece(String alg) {
     	if(alg.length() != 2) return null;
