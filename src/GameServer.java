@@ -76,6 +76,7 @@ class Game {
 
         public void otherPlayerMoved(String location) {
             output.println(location);
+            System.out.println("Move sent.");
         }
 
         /**
@@ -87,7 +88,7 @@ class Game {
                 while (true) {
                     String command = input.readLine();
                     System.out.println(command);
-                    if (!command.contains("Resign")) {
+                    if (!command.contains("Resign") && command.contains(color.toString())) {
                         sendMove(command, this);
                     } else {
                     	sendMove(command, this);
