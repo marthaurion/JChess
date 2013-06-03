@@ -39,6 +39,7 @@ class Game {
     public synchronized void sendMove(String s, Player player) {
         if (player == currentPlayer) {
             currentPlayer = currentPlayer.opponent;
+            System.out.println(currentPlayer.color.toString());
             currentPlayer.otherPlayerMoved(s);
         }
     }
