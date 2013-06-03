@@ -122,6 +122,6 @@ public class Board {
     }
     
     public void endGame(PieceColor c) {
-    	player.endGame(c);
+    	if(player.getColor() == c) player.endGame(c);
     }
 }
