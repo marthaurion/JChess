@@ -45,8 +45,7 @@ public class Model {
 	}
 	
 	public void waitMove() throws IOException {
-		Move m = board.waitMove();
-		if(m == null) endGame(board.getTurn());
+		board.waitMove();
 		notifyObs();
 	}
 	
