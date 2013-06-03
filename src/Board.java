@@ -115,7 +115,9 @@ public class Board {
     }
     
     public void waitMove() throws IOException {
-    	Move m = player.waitMove();
-    	makeMove(m);
+    	if(turn != player.getColor()) {
+    		Move m = player.waitMove();
+    		makeMove(m);
+    	}
     }
 }
