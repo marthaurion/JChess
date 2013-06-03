@@ -11,7 +11,6 @@ public class Model {
 		board = new Board(c, this);
 		board.newGame();
 		obs = new ArrayList<Observer>();
-		obs.add(board.getPlayer());
 		visitor = new PieceVisitor(this);
 	}
 	
@@ -52,6 +51,7 @@ public class Model {
 	
 	public void endGame(PieceColor c) {
 		System.out.println("Game Over");
+		board.endGame(c);
 		for(int i = 0; i < obs.size(); i++) {
 			obs.get(i).endGame(c);
 		}

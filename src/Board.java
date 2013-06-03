@@ -120,4 +120,8 @@ public class Board {
     		makeMove(m);
     	}
     }
+    
+    public void endGame(PieceColor c) {
+    	player.endGame(c);
+    }
 }
