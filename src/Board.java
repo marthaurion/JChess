@@ -15,6 +15,10 @@ public class Board {
     	return board;
     }
     
+    public PieceColor getTurn() {
+    	return turn;
+    }
+    
     public Player getPlayer() {
     	return player;
     }
@@ -114,11 +118,8 @@ public class Board {
     	else turn = PieceColor.White;
     }
     
-    public void waitMove() throws IOException {
-    	if(turn != player.getColor()) {
-    		Move m = player.waitMove();
-    		makeMove(m);
-    	}
+    public Move waitMove() throws IOException {
+    	return player.waitMove();
     }
     
     public void endGame(PieceColor c) {
