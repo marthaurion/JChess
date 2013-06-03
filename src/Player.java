@@ -17,13 +17,11 @@ public class Player {
 	}
 	
 	public void endGame(PieceColor c) {
-		if(c != color) {
-			try {
-				proxy.sendResign(color);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			proxy.sendResign(color);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
