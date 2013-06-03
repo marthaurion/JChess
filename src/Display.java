@@ -62,7 +62,6 @@ public class Display implements Observer {
 		frame.add(player);
 		frame.pack();
 		frame.setVisible(true);
-		model.waitMove();
 	}
 	
 	public JPanel displayBoard() {

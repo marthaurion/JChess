@@ -23,11 +23,6 @@ public class Model {
 		return board;
 	}
 	
-	public void waitMove() throws IOException {
-		board.waitMove();
-		notifyObs();
-	}
-	
 	public void notifyObs() {
 		//update every observer
 		for(int i = 0; i < obs.size(); i++) {
@@ -47,6 +42,10 @@ public class Model {
 	public void makeMove(Move m) throws IOException {
 		board.makeMove(m);
 		notifyObs();
+		waitMove();
+	}
+	
+	public void waitMove() throws IOException {
 		board.waitMove();
 		notifyObs();
 	}
