@@ -117,12 +117,12 @@ public class Board {
     public void waitMove() throws IOException {
     	if(turn != player.getColor()) {
     		Move m = player.waitMove();
+    		if(m == null) System.exit(0);
     		makeMove(m);
     	}
     }
     
     public void endGame(PieceColor c) {
     	if(player.getColor() == c) player.endGame(c);
-    	else System.exit(0);
     }
 }

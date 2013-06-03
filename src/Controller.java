@@ -26,6 +26,7 @@ public class Controller implements ActionListener, Observer {
 		ChessButton source = (ChessButton)e.getSource();
 		if(source.getText().equals("Resign")) {
 			//end the game
+			model.endGame(model.getData().getPlayer().getColor());
 		}
 		else {
 			//if there is no source, set this to be the source
