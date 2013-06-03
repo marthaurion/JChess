@@ -4,9 +4,11 @@ import java.io.IOException;
 public class PlayerProxy {
 	
 	private PlayerBroker broker;
+	private Player player;
 	
 	public PlayerProxy(Player p) {
 		broker = null;
+		player = p;
 	}
 	
 	public void setBroker(PlayerBroker b) {
@@ -15,6 +17,9 @@ public class PlayerProxy {
 	
 	public Move getMove() throws IOException {
 		PlayerAction action = broker.getMove();
+		if(action.getAction() != null && action.getAction().contains("Resign")) {
+			player.endGame(action.getColor());
+		}
 		return action.getMove();
 	}
 	
