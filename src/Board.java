@@ -112,8 +112,6 @@ public class Board {
     	
     	if(turn == PieceColor.White) turn = PieceColor.Black;
     	else turn = PieceColor.White;
-    	
-    	if(turn != player.getColor()) waitMove();
     }
     
     public void waitMove() throws IOException {

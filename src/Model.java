@@ -47,6 +47,8 @@ public class Model {
 	public void makeMove(Move m) throws IOException {
 		board.makeMove(m);
 		notifyObs();
+		board.waitMove();
+		notifyObs();
 	}
 	
 	public void endGame(PieceColor c) {
