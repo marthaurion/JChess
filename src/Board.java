@@ -96,7 +96,7 @@ public class Board {
     		player.sendMove(m);
     		System.out.println("Move sent.");
     	}
-    	
+    	System.out.println("Current turn: "+turn.toString());
     	int x = m.getSource().getLocation().getX();
     	int y = m.getSource().getLocation().getY();
     	
