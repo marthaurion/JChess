@@ -4,11 +4,9 @@ import java.io.IOException;
 public class PlayerProxy {
 	
 	private PlayerBroker broker;
-	private Player play;
 	
 	public PlayerProxy(Player p) {
 		broker = null;
-		play = p;
 	}
 	
 	public void setBroker(PlayerBroker b) {

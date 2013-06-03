@@ -40,10 +40,8 @@ public class PlayerBroker {
 		return PlayerAction.fromString(fromServer);
 	}
 	
-	public PlayerAction sendMessage(PlayerAction p) throws IOException {
+	public void sendMessage(PlayerAction p) throws IOException {
 		output.println(p.toString());
-		String fromServer = input.readLine();
-		return PlayerAction.fromString(fromServer);
 	}
 	
 	public void endGame(PieceColor c) throws IOException {
