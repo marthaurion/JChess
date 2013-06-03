@@ -38,6 +38,7 @@ public class PlayerBroker {
 	public PlayerAction getMove() throws IOException {
 		String fromServer = input.readLine();
 		System.out.println("Move received.");
+		System.out.println(fromServer);
 		return PlayerAction.fromString(fromServer);
 	}
 	
