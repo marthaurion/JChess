@@ -24,7 +24,7 @@ public class Display implements Observer {
 		frame.remove(panel);
 		
 		panel = displayBoard();
-		frame.add(panel, 0);
+		frame.add(panel);
 		frame.revalidate();
 		frame.repaint();
 	}
@@ -52,14 +52,8 @@ public class Display implements Observer {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new FlowLayout());
 		
-		JPanel player = new JPanel();
-		ChessButton resign = new ChessButton("Resign");
-		resign.addActionListener(control);
-		player.add(resign);
-		
 		panel = displayBoard();
 		frame.add(panel);
-		frame.add(player);
 		frame.pack();
 		frame.setVisible(true);
 		model.waitMove();
