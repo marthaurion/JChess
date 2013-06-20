@@ -5,8 +5,8 @@ public class Board {
     private PieceColor turn;
     private Player player;
     
-    public Board(PieceColor c, Model m) throws IOException {
-    	player = new Player(m);
+    public Board(PieceColor c) {
+    	player = new Player(c);
         board = new Piece[8][8];
         turn = PieceColor.White;
     }
@@ -92,10 +92,6 @@ public class Board {
     //should only be called after tryMove returns true
     public void makeMove(Move m) throws IOException {
     	//send move first
-    	if(player.getColor() == turn) {
-    		player.sendMove(m);
-    		System.out.println("Move sent.");
-    	}
     	System.out.println("Current turn: "+turn.toString());
     	int x = m.getSource().getLocation().getX();
     	int y = m.getSource().getLocation().getY();
@@ -113,16 +109,5 @@ public class Board {
     	if(turn == PieceColor.White) turn = PieceColor.Black;
     	else turn = PieceColor.White;
     }
-    
-    public void waitMove() throws IOException {
-    	if(turn != player.getColor()) {
-    		Move m = player.waitMove();
-    		if(m == null) System.exit(0);
-    		makeMove(m);
-    	}
-    }
-    
-    public void endGame(PieceColor c) {
-    	if(player.getColor() == c) player.endGame(c);
-    }
+
 }

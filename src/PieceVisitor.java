@@ -1,19 +1,11 @@
 import java.util.ArrayList;
 
 
-public class PieceVisitor implements Observer {
-	private Model model;
+public class PieceVisitor {
+	private Board board;
 	
-	public PieceVisitor(Model m) {
-		model = m;
-	}
-	
-	public void update(Model m) {
-		model = m;
-	}
-	
-	public void endGame(PieceColor c) {
-		
+	public PieceVisitor(Board b) {
+		board = b;
 	}
 	
 	/*
@@ -365,7 +357,7 @@ public class PieceVisitor implements Observer {
 	//checks a location and returns whether it is empty or not
 	private boolean isEmpty(int x, int y) {
 		//should return true only if the no piece is there
-		return model.getData().getPiece(x, y).getName().equals("None");
+		return board.getPiece(x, y).getName().equals("None");
 	}
 	
 	//checks if a given x, y coordinate is on the board
@@ -375,7 +367,7 @@ public class PieceVisitor implements Observer {
 	
 	//returns true if colors are different
 	private boolean isEnemy(int x, int y, Piece p) {
-		return p.getColor() != model.getData().getPiece(x, y).getColor();
+		return p.getColor() != board.getPiece(x, y).getColor();
 	}
 	
 	//checks to make sure the source piece is the same as the piece calling visit
