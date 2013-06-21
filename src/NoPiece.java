@@ -1,5 +1,5 @@
 
-public class NoPiece implements Piece {
+public class NoPiece extends Piece {
 	private PieceColor color;
 	private Square location;
 	
@@ -37,7 +37,7 @@ public class NoPiece implements Piece {
     	return color;
     }
     
-    public boolean acceptVisitor(PieceVisitor p, Move m) {
+    public boolean move(Move m, Board b) {
     	return false;
     }
 }

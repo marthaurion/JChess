@@ -1,22 +1,15 @@
-import java.io.IOException;
 
 public class Board {
     private Piece[][] board;
     private PieceColor turn;
-    private Player player;
     
-    public Board(PieceColor c) {
-    	player = new Player(c);
+    public Board() {
         board = new Piece[8][8];
         turn = PieceColor.White;
     }
     
     public Piece[][] getBoard() {
     	return board;
-    }
-    
-    public Player getPlayer() {
-    	return player;
     }
     
     //get the piece based on rank-file notation (such as g8)
@@ -81,16 +74,12 @@ public class Board {
     	}
     }
     
-    public boolean tryMove(Move m, PieceVisitor v) {
-    	//checks if the right player is moving
-    	if(player.getColor() != turn) return false;
-    	
-    	//now does the visitor check
-    	return m.getSource().acceptVisitor(v, m);
+    public boolean tryMove(Move m) {
+    	return m.getSource().move(m, this);
     }
     
     //should only be called after tryMove returns true
-    public void makeMove(Move m) throws IOException {
+    public void makeMove(Move m) {
     	//send move first
     	System.out.println("Current turn: "+turn.toString());
     	int x = m.getSource().getLocation().getX();

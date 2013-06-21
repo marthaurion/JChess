@@ -1,5 +1,5 @@
 
-public class Queen implements Piece {
+public class Queen extends Piece {
 	private PieceColor color;
 	private Square location;
 	
@@ -37,7 +37,8 @@ public class Queen implements Piece {
     	return color;
     }
     
-    public boolean acceptVisitor(PieceVisitor p, Move m) {
-    	return p.visitQueen(m, this);
+    public boolean move(Move m, Board b) {
+    	return false;
     }
+    
 }
