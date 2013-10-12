@@ -1,11 +1,12 @@
 
-public class Bishop extends Piece {
+public class Bishop extends StraightLine {
 	private PieceColor color;
 	private Square location;
 	
-	public Bishop(int x, int y, PieceColor c) {
+	public Bishop(int x, int y, PieceColor c, Board b) {
 		color = c;
 		location = new Square(x, y);
+		board = b;
 	}
 	
 	public Square getLocation() {
@@ -37,7 +38,7 @@ public class Bishop extends Piece {
     	return color;
     }
     
-    public boolean move(Move m, Board b) {
+    public boolean move(Move m) {
     	return false;
     }
     

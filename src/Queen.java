@@ -1,11 +1,12 @@
 
-public class Queen extends Piece {
+public class Queen extends StraightLine {
 	private PieceColor color;
 	private Square location;
 	
-	public Queen(int x, int y, PieceColor c) {
+	public Queen(int x, int y, PieceColor c, Board b) {
 		color = c;
 		location = new Square(x, y);
+		board = b;
 	}
 	
 	public Square getLocation() {
@@ -37,7 +38,7 @@ public class Queen extends Piece {
     	return color;
     }
     
-    public boolean move(Move m, Board b) {
+    public boolean move(Move m) {
     	return false;
     }
     

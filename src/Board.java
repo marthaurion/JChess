@@ -39,29 +39,29 @@ public class Board {
     	//pawns
     	for(int i = 0; i < 8; i++) {
     		//make these pawns
-    		board[1][i] = new Pawn(i, 1, PieceColor.White);
-    		board[6][i] = new Pawn(i, 6, PieceColor.Black);
+    		board[1][i] = new Pawn(i, 1, PieceColor.White, this);
+    		board[6][i] = new Pawn(i, 6, PieceColor.Black, this);
     	}
     	
     	//white back row
-    	board[0][0] = new Rook(0, 0, PieceColor.White);
-    	board[0][1] = new Knight(1, 0, PieceColor.White);
-    	board[0][2] = new Bishop(2, 0, PieceColor.White);
-    	board[0][3] = new Queen(3, 0, PieceColor.White);
-    	board[0][4] = new King(4, 0, PieceColor.White);
-    	board[0][5] = new Bishop(5, 0, PieceColor.White);
-    	board[0][6] = new Knight(6, 0, PieceColor.White);
-    	board[0][7] = new Rook(7, 0, PieceColor.White);
+    	board[0][0] = new Rook(0, 0, PieceColor.White, this);
+    	board[0][1] = new Knight(1, 0, PieceColor.White, this);
+    	board[0][2] = new Bishop(2, 0, PieceColor.White, this);
+    	board[0][3] = new Queen(3, 0, PieceColor.White, this);
+    	board[0][4] = new King(4, 0, PieceColor.White, this);
+    	board[0][5] = new Bishop(5, 0, PieceColor.White, this);
+    	board[0][6] = new Knight(6, 0, PieceColor.White, this);
+    	board[0][7] = new Rook(7, 0, PieceColor.White, this);
     	
     	//black back row
-    	board[7][0] = new Rook(0, 7, PieceColor.Black);
-    	board[7][1] = new Knight(1, 7, PieceColor.Black);
-    	board[7][2] = new Bishop(2, 7, PieceColor.Black);
-    	board[7][3] = new Queen(3, 7, PieceColor.Black);
-    	board[7][4] = new King(4, 7, PieceColor.Black);
-    	board[7][5] = new Bishop(5, 7, PieceColor.Black);
-    	board[7][6] = new Knight(6, 7, PieceColor.Black);
-    	board[7][7] = new Rook(7, 7, PieceColor.Black);
+    	board[7][0] = new Rook(0, 7, PieceColor.Black, this);
+    	board[7][1] = new Knight(1, 7, PieceColor.Black, this);
+    	board[7][2] = new Bishop(2, 7, PieceColor.Black, this);
+    	board[7][3] = new Queen(3, 7, PieceColor.Black, this);
+    	board[7][4] = new King(4, 7, PieceColor.Black, this);
+    	board[7][5] = new Bishop(5, 7, PieceColor.Black, this);
+    	board[7][6] = new Knight(6, 7, PieceColor.Black, this);
+    	board[7][7] = new Rook(7, 7, PieceColor.Black, this);
     }
     
     //for debug
@@ -74,8 +74,10 @@ public class Board {
     	}
     }
     
+    //I should change this function to take in Pieces or something, rather than the move itself
+    //calling m.something.something(m) seems dumb
     public boolean tryMove(Move m) {
-    	return m.getSource().move(m, this);
+    	return m.getSource().move(m);
     }
     
     //should only be called after tryMove returns true

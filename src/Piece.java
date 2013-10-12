@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 
 public abstract class Piece {
-	public abstract boolean move(Move m, Board b);
+	protected Board board;
+	
+	public abstract boolean move(Move m);
 	public abstract Square getLocation();
 	public abstract void setLocation(Square s);
 	public abstract String getNotation();
@@ -29,9 +31,9 @@ public abstract class Piece {
 	}
 	
 	//checks a location and returns whether it is empty or not
-	protected boolean isEmpty(int x, int y, Board b) {
+	protected boolean isEmpty(int x, int y) {
 		//should return true only if the no piece is there
-		return b.getPiece(x, y).getName().equals("None");
+		return board.getPiece(x, y).getName().equals("None");
 	}
 	
 	//checks if a given x, y coordinate is on the board
@@ -40,8 +42,8 @@ public abstract class Piece {
 	}
 	
 	//returns true if colors are different
-	protected boolean isEnemy(int x, int y, Piece p, Board b) {
-		return p.getColor() != b.getPiece(x, y).getColor();
+	protected boolean isEnemy(int x, int y, Piece p) {
+		return p.getColor() != board.getPiece(x, y).getColor();
 	}
 	
 	//checks to make sure the source piece is the same as the piece calling visit
@@ -67,4 +69,8 @@ public abstract class Piece {
 		return true;
 	}
     
+	//made this so I don't have to deal with constructor inheritance
+	public void setBoard(Board b) {
+		board = b;
+	}
 }

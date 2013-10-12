@@ -1,4 +1,4 @@
-
+//this will act as a temporary controller
 public class Player {
 	private PieceColor color;
 	

@@ -37,7 +37,7 @@ public class NoPiece extends Piece {
     	return color;
     }
     
-    public boolean move(Move m, Board b) {
+    public boolean move(Move m) {
     	return false;
     }
 }

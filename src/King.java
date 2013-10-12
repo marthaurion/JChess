@@ -3,9 +3,10 @@ public class King extends Piece {
 	private PieceColor color;
 	private Square location;
 	
-	public King(int x, int y, PieceColor c) {
+	public King(int x, int y, PieceColor c, Board b) {
 		color = c;
 		location = new Square(x, y);
+		board = b;
 	}
 	
 	public Square getLocation() {
@@ -37,7 +38,7 @@ public class King extends Piece {
     	return color;
     }
     
-    public boolean move(Move m, Board b) {
+    public boolean move(Move m) {
     	return false;
     }
     
