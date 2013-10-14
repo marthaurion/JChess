@@ -40,10 +40,7 @@ public class Pawn extends Piece {
     	return color;
     }
     
-    public boolean move(Move m) {
-		//first do basic checks
-		if(!checkPiece(m, this)) return false;
-		
+    public ArrayList<Square> getLegalMoves() {
 		//generate legal moves
 		//ignoring en passant for now
 		ArrayList<Square> list = new ArrayList<Square>();
@@ -66,8 +63,7 @@ public class Pawn extends Piece {
 		if(onBoard(myX-1, myY+a) && !isEmpty(myX-1, myY+a) && isEnemy(myX-1, myY+a, this)) {
 			list.add(new Square(myX-1, myY+a));
 		}
-		
-		return checkList(m, list);
+		return list;
     }
     
     

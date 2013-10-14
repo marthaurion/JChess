@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class NoPiece extends Piece {
 	private PieceColor color;
@@ -37,7 +38,7 @@ public class NoPiece extends Piece {
     	return color;
     }
     
-    public boolean move(Move m) {
-    	return false;
+    public ArrayList<Square> getLegalMoves() {
+    	return null;
     }
 }

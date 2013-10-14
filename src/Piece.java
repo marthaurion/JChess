@@ -3,7 +3,6 @@ import java.util.ArrayList;
 public abstract class Piece {
 	protected Board board;
 	
-	public abstract boolean move(Move m);
 	public abstract Square getLocation();
 	public abstract void setLocation(Square s);
 	public abstract String getNotation();
@@ -11,7 +10,17 @@ public abstract class Piece {
     public abstract String getName();
     public abstract char getID();
     public abstract PieceColor getColor();
+    public abstract ArrayList<Square> getLegalMoves();
     
+    //moved this function to piece because it has become generalized
+    protected boolean move(Move m) {
+		//first do basic checks
+		if(!checkPiece(m, this)) return false;
+		
+		ArrayList<Square> list = getLegalMoves();
+		
+		return checkList(m, list);
+    }
     
 	protected boolean checkList(Move m, ArrayList<Square> l) {
 		//false if there are no legal moves
