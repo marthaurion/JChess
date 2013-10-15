@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class Bishop extends StraightLine {
 	private PieceColor color;
@@ -29,7 +31,6 @@ public class Bishop extends StraightLine {
     	return "Bishop";
     }
     
-    //pawns have no character code in algebraic notation
     public char getID() {
     	return 'B';
     }
@@ -37,9 +38,14 @@ public class Bishop extends StraightLine {
     public PieceColor getColor() {
     	return color;
     }
-    
-    public boolean move(Move m) {
-    	return false;
-    }
+
+	public ArrayList<Square> getLegalMoves() {
+		ArrayList<Square> list = new ArrayList<Square>();
+		int x = location.getX();
+		int y = location.getY();
+		
+		list = addDiagonal(list, x, y, this);
+		return list;
+	}
     
 }

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class Rook extends StraightLine {
 	private PieceColor color;
@@ -29,7 +31,6 @@ public class Rook extends StraightLine {
     	return "Rook";
     }
     
-    //pawns have no character code in algebraic notation
     public char getID() {
     	return 'R';
     }
@@ -37,9 +38,14 @@ public class Rook extends StraightLine {
     public PieceColor getColor() {
     	return color;
     }
-    
-    public boolean move(Move m) {
-    	return false;
-    }
-    
+
+	public ArrayList<Square> getLegalMoves() {
+		ArrayList<Square> list = new ArrayList<Square>();
+		int x = location.getX();
+		int y = location.getY();
+		
+		list = addStraight(list, x, y, this);
+		return list;
+	}
+	
 }

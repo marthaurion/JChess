@@ -31,7 +31,6 @@ public class Knight extends Piece {
     	return "Knight";
     }
     
-    //pawns have no character code in algebraic notation
     public char getID() {
     	return 'N';
     }

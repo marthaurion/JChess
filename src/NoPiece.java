@@ -29,7 +29,6 @@ public class NoPiece extends Piece {
     	return "None";
     }
     
-    //pawns have no character code in algebraic notation
     public char getID() {
     	return ' ';
     }

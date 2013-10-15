@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class King extends Piece {
 	private PieceColor color;
@@ -29,7 +31,6 @@ public class King extends Piece {
     	return "King";
     }
     
-    //pawns have no character code in algebraic notation
     public char getID() {
     	return 'K';
     }
@@ -37,9 +38,42 @@ public class King extends Piece {
     public PieceColor getColor() {
     	return color;
     }
-    
-    public boolean move(Move m) {
-    	return false;
-    }
+
+	public ArrayList<Square> getLegalMoves() {
+		//similar to the knight because there are only 8 possible moves
+		ArrayList<Square> list = new ArrayList<Square>();
+		int x = location.getX();
+		int y = location.getY();
+		
+		//add surrounding squares
+		list.add(new Square(x+1, y+1));
+		list.add(new Square(x+1, y));
+		list.add(new Square(x+1, y-1));
+		
+		list.add(new Square(x, y+1));
+		list.add(new Square(x, y-1));
+		
+		list.add(new Square(x-1, y+1));
+		list.add(new Square(x-1, y));
+		list.add(new Square(x-1, y-1));
+		
+		
+		//remove the moves that aren't legal
+		for(int i = 0; i < list.size(); i++) {
+			x = list.get(i).getX();
+			y = list.get(i).getY();
+			
+			if(!onBoard(x, y)) {
+				list.remove(i);
+				i--;
+			}
+			else if(!isEmpty(x, y) && !isEnemy(x, y, this)) {
+				list.remove(i);
+				i--;
+			}
+		}
+		
+		return list;
+	}
     
 }
