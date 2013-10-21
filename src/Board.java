@@ -1,13 +1,21 @@
+import java.util.ArrayList;
 
 public class Board {
     private Piece[][] board;
     private PieceColor turn;
     
+    private Square wKing;
+    private Square bKing;
+    
     public Board() {
         board = new Piece[8][8];
         turn = PieceColor.White;
+        
+        wKing = null;
+        bKing = null;
     }
     
+    /* getter functions */
     public Piece[][] getBoard() {
     	return board;
     }
@@ -23,6 +31,68 @@ public class Board {
     //get a piece based on coordinates
     public Piece getPiece(int x, int y) {
     	return board[y][x];
+    }
+    
+    //just for displaying current turn
+    public String getTurn() {
+    	if(turn == PieceColor.White) return "White";
+    	else return "Black";
+    }
+    
+    
+    //returns 0 if tie, -1 if black win, 1 if white wins, and 2 if no win
+    //impossible to tie so far...will add functionality later
+    public int gameState() {
+    	boolean surrounded = true; //stores whether king has safe moves
+    	boolean check;
+    	
+    	//check white king first
+    	ArrayList<Square> moves = board[wKing.getY()][wKing.getX()].getLegalMoves();
+    	int[][] map = generateAttackMaps(PieceColor.White);
+    	
+    	for(int i = 0; i < moves.size(); i++) {
+    		if(map[moves.get(i).getY()][moves.get(i).getX()] == 0) {
+    			surrounded = false;
+    		}
+    	}
+    	
+    	check = isCheck(PieceColor.White);
+    	if(check && surrounded) return -1; //black win if white king in check and can't move
+    	
+    	//check black king now
+    	surrounded = true;
+    	
+    	moves = board[bKing.getY()][bKing.getX()].getLegalMoves();
+    	map = generateAttackMaps(PieceColor.Black);
+    	
+    	for(int i = 0; i < moves.size(); i++) {
+    		if(map[moves.get(i).getY()][moves.get(i).getX()] == 0) {
+    			surrounded = false;
+    		}
+    	}
+    	
+    	check = isCheck(PieceColor.Black);
+    	if(check && surrounded) return 1; //white win if black king in check and can't move
+    	
+    	//if all of these fail, the game isn't over yet
+    	return 2;
+    }
+    
+    //returns whether the input color's king is in check
+    private boolean isCheck(PieceColor c) {
+    	int[][] map = generateAttackMaps(c);
+    	int x, y;
+    	if(c == PieceColor.White) {
+    		x = wKing.getX();
+    		y = wKing.getY();
+    	}
+    	else {
+    		x = bKing.getX();
+    		y = bKing.getY();
+    	}
+    	//if the king is being threatened, return true
+    	if(map[y][x] > 0) return true;
+    	else return false;
     }
     
     //initializes the board with the normal starting pieces
@@ -62,6 +132,43 @@ public class Board {
     	board[7][5] = new Bishop(5, 7, PieceColor.Black, this);
     	board[7][6] = new Knight(6, 7, PieceColor.Black, this);
     	board[7][7] = new Rook(7, 7, PieceColor.Black, this);
+    	
+    	//store locations of king so they can be checked
+    	wKing = new Square(4, 0);
+    	bKing = new Square(4, 7);
+    }
+    
+    //each point on the map corresponds to the number of attacking pieces
+    //generates a map for the input color
+    //map will show number of pieces of color opposite to input that are threatening each square
+    public int[][] generateAttackMaps(PieceColor col) {
+    	ArrayList<Square> moves;
+    	int[][] map = new int[8][8];
+    	int x, y;
+    	
+    	if(col == PieceColor.None) {
+    		System.out.println("Attack Map got the wrong color.");
+    		System.exit(0);
+    	}
+    	
+    	for(int i = 0; i < 8; i++) {
+    		for(int j = 0; j < 8; j++) {
+    			moves = board[i][j].getThreatList();
+    			
+    			if(moves != null) {
+	    			//loop through legal moves
+	    			//add 1 to the target square's map
+	    			for(int k = 0; k < moves.size(); k++) {
+	    				x = moves.get(k).getX();
+	    				y = moves.get(k).getY();
+	    				
+	    				//add pieces of the opposite color
+	    				if(board[i][j].getColor() != col) map[y][x]++;
+	    			}
+    			}
+    		}
+    	}
+    	return map;
     }
     
     //for debug
@@ -69,6 +176,15 @@ public class Board {
     	for(int i = 7; i >= 0; i--) {
     		for(int j = 0; j < 8; j++) {
     			System.out.print(""+board[i][j].getColor().toString().charAt(0)+board[i][j].getName().charAt(0)+"\t");
+    		}
+    		System.out.println();
+    	}
+    }
+    
+    public void printMap(int[][] map) {
+    	for(int i = 7; i >= 0; i--) {
+    		for(int j = 0; j < 8; j++) {
+    			System.out.print(""+map[i][j]+"\t");
     		}
     		System.out.println();
     	}
@@ -82,8 +198,16 @@ public class Board {
     
     //should only be called after tryMove returns true
     public void makeMove(Move m) {
+    	PieceColor moved = m.getSource().getColor();
+    	
+    	//store new king location if it moved
+    	if(m.getSource().getName().equals("King")) {
+    		if(moved == PieceColor.White) wKing = m.getDest().getLocation();
+    		else if(moved == PieceColor.Black) bKing = m.getDest().getLocation();
+    		else System.exit(0);
+    	}
+    	
     	//send move first
-    	System.out.println("Current turn: "+turn.toString());
     	int x = m.getSource().getLocation().getX();
     	int y = m.getSource().getLocation().getY();
     	

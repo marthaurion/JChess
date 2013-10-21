@@ -40,6 +40,21 @@ public class Pawn extends Piece {
     	return color;
     }
     
+    @Override
+    //the pawns threat squares aren't actually legal moves
+    public ArrayList<Square> getThreatList() {
+    	ArrayList<Square> list = new ArrayList<Square>();
+    	
+		int myX = location.getX();
+		int myY = location.getY();
+		
+    	int a = advance();
+    	
+    	if(onBoard(myX+1, myY+a)) list.add(new Square(myX+1, myY+a));
+    	if(onBoard(myX-1, myY+a)) list.add(new Square(myX-1, myY+a));
+    	return list;
+    }
+    
     public ArrayList<Square> getLegalMoves() {
 		//generate legal moves
 		//ignoring en passant for now
