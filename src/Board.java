@@ -193,6 +193,7 @@ public class Board {
     //I should change this function to take in Pieces or something, rather than the move itself
     //calling m.something.something(m) seems dumb
     public boolean tryMove(Move m) {
+    	if(m.getSource().getColor() != turn) return false;
     	return m.getSource().move(m);
     }
     

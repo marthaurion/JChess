@@ -1,10 +1,14 @@
-import java.util.Scanner;
+//import java.util.Scanner;
 
 public class Test {
 	public static void main(String[] args) {
 		Board board = new Board();
 		board.newGame();
 		
+		Display disp = new Display(board);
+		disp.initialize();
+		
+		/*
 		Scanner scan = new Scanner(System.in);
 		int sx, sy, dx, dy;
 		Move move;
@@ -36,5 +40,6 @@ public class Test {
 		
 		
 		scan.close();
+		*/
 	}
 }
