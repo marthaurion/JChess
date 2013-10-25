@@ -58,7 +58,7 @@ public class Board {
     	
     	check = isCheck(PieceColor.White);
     	if(check && surrounded) return -1; //black win if white king in check and can't move
-    	
+    	if(check) System.out.println("Check on White King!");
     	//check black king now
     	surrounded = true;
     	
@@ -73,7 +73,7 @@ public class Board {
     	
     	check = isCheck(PieceColor.Black);
     	if(check && surrounded) return 1; //white win if black king in check and can't move
-    	
+    	if(check) System.out.println("Check on Black King!");
     	//if all of these fail, the game isn't over yet
     	return 2;
     }

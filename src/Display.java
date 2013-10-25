@@ -14,20 +14,22 @@ public class Display implements ActionListener {
 	private JPanel panel;
 	private int sourceX;
 	private int sourceY;
+	private ChessButton sourceButton;
 	
 	public Display(Board b) {
 		board = b;
 		sourceX = -1;
 		sourceY = -1;
+		sourceButton = null;
 	}
 	
-	public void update() {
-		frame.remove(panel);
+	public void update(ChessButton button) {
+		//frame.remove(panel);
 		
-		panel = displayBoard();
-		frame.add(panel);
-		frame.revalidate();
-		frame.repaint();
+		//panel = displayBoard();
+		//frame.add(panel);
+		//frame.revalidate();
+		//frame.repaint();
 	}
 	
 	public void endGame(PieceColor c) {
@@ -63,13 +65,7 @@ public class Display implements ActionListener {
 			for(int j = 0; j < 8; j++) {
 				ChessButton grid = new ChessButton(j, i);
 				
-				Piece temp = board.getPiece(j, i);
-				String st = "";
-				if(temp.getName().equals("None")) st = " ";
-				else if(temp.getName().equals("Pawn")) st += temp.getColor().toString().substring(0,1)+"P";
-				else st += temp.getColor().toString().substring(0,1)+temp.getID();
-				
-				grid.setText(st);
+				grid.setPiece(board.getPiece(j, i));
 				grid.addActionListener(this);
 				p.add(grid);
 			}
@@ -84,9 +80,11 @@ public class Display implements ActionListener {
 		ChessButton source = (ChessButton)e.getSource();
 		
 		//if there is no source, set this to be the source
-		if(sourceX == -1 && sourceY == -1) {
+		if(sourceButton == null) {
 			sourceX = source.getMyX();
 			sourceY = source.getMyY();
+			sourceButton = source;
+			sourceButton.activate();
 		}
 		//otherwise create the move and send to the model
 		else {
@@ -97,6 +95,8 @@ public class Display implements ActionListener {
 			if(sourceX == x && sourceY == y) {
 				sourceX = -1;
 				sourceY = -1;
+				sourceButton.deactivate();
+				sourceButton = null;
 			}
 			else {
 				Piece src = board.getPiece(sourceX, sourceY);
@@ -114,21 +114,29 @@ public class Display implements ActionListener {
 					if(dest.getName().equals("King")) {
 						//end game
 						endGame(src.getColor());
+						return;
 					}
-					else {
-						board.makeMove(m);
-						update();
-					}
+					else board.makeMove(m);
 					
 					//after making the move, check if the king is checkmated
 					int temp = board.gameState();
 					if(temp == 1) endGame(PieceColor.White);
 					else if(temp == -1) endGame(PieceColor.Black);
 					else if(temp == 0) endGame(PieceColor.None);
+					
+					sourceButton.setPiece(new NoPiece(x,y)); //empty old square
+					sourceButton.deactivate();
+					source.setPiece(src); //set destination square to be source piece
+					source.repaint();
+					sourceButton = null; //clear the source button
 				}
 				//endif flag
 				
-				else System.out.println("Invalid move"); //for debug
+				else {
+					System.out.println("Invalid move"); //for debug
+					sourceButton.deactivate();
+					sourceButton = null;
+				}
 			}
 			//endelse
 		}
