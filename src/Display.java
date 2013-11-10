@@ -129,6 +129,7 @@ public class Display implements ActionListener {
 					source.setPiece(src); //set destination square to be source piece
 					source.repaint();
 					sourceButton = null; //clear the source button
+					board.printMoveList();
 				}
 				//endif flag
 				

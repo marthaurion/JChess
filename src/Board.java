@@ -7,12 +7,16 @@ public class Board {
     private Square wKing;
     private Square bKing;
     
+    private ArrayList<String> moveList;
+    
     public Board() {
         board = new Piece[8][8];
         turn = PieceColor.White;
         
         wKing = null;
         bKing = null;
+        
+        moveList = new ArrayList<String>();
     }
     
     /* getter functions */
@@ -190,6 +194,12 @@ public class Board {
     	}
     }
     
+    public void printMoveList() {
+    	for(int i = 0; i < moveList.size(); ++i) {
+    		System.out.println(moveList.get(i));
+    	}
+    }
+    
     //I should change this function to take in Pieces or something, rather than the move itself
     //calling m.something.something(m) seems dumb
     public boolean tryMove(Move m) {
@@ -224,6 +234,9 @@ public class Board {
     	
     	if(turn == PieceColor.White) turn = PieceColor.Black;
     	else turn = PieceColor.White;
+    	
+    	//after the move is made, record the move in the movelist
+    	moveList.add(m.getSource().getID() + m.getDest().getLocation().getNotation());
     }
 
 }
