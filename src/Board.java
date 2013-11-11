@@ -43,6 +43,10 @@ public class Board {
     	else return "Black";
     }
     
+    public ArrayList<String> getMoves() {
+    	return moveList;
+    }
+    
     
     //returns 0 if tie, -1 if black win, 1 if white wins, and 2 if no win
     //impossible to tie so far...will add functionality later
@@ -210,6 +214,9 @@ public class Board {
     //should only be called after tryMove returns true
     public void makeMove(Move m) {
     	PieceColor moved = m.getSource().getColor();
+
+    	//before the move is made, record the move in the movelist
+    	updateMoveList(m);
     	
     	//store new king location if it moved
     	if(m.getSource().getName().equals("King")) {
@@ -234,9 +241,21 @@ public class Board {
     	
     	if(turn == PieceColor.White) turn = PieceColor.Black;
     	else turn = PieceColor.White;
-    	
-    	//after the move is made, record the move in the movelist
-    	moveList.add(m.getSource().getID() + m.getDest().getLocation().getNotation());
     }
 
+    //simple for now, but want to add support for castling and such later
+    public void updateMoveList(Move m) {
+    	//if no piece, normal notation
+    	if(m.getDest().getName().equals("None")) {
+    		moveList.add(m.getSource().getID() + m.getDest().getLocation().getNotation());
+    	}
+    	//add "x" for capturing
+    	//for pawn, it's a bit different
+    	else if(m.getSource().getName().equals("Pawn")) {
+    		moveList.add(m.getSource().getLocation().getFile()+ "x" + m.getDest().getLocation().getNotation());
+    	}
+    	else {
+    		moveList.add(m.getSource().getID() + "x" + m.getDest().getLocation().getNotation());
+    	}
+    }
 }
