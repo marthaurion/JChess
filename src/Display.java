@@ -63,7 +63,6 @@ public class Display implements ActionListener {
 		JPanel p = new JPanel();
 		p.setLayout(new GridLayout(8, 8));
 		p.setPreferredSize(new Dimension(600, 600));
-		
 		for(int i = 7; i >= 0; i--) {
 			for(int j = 0; j < 8; j++) {
 				ChessButton grid = new ChessButton(j, i);
