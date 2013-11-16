@@ -13,5 +13,6 @@ Things that are done:
 
 Things to be done:
 - Checkmate detection
-- Add online aspect back.
-- Create an AI.
+- Castling and possibly en passant
+- Add online aspect back
+- Create an AI
