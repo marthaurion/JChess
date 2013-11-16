@@ -2,6 +2,7 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.border.LineBorder;
 
 
 public class ChessButton extends JButton {
@@ -12,7 +13,8 @@ public class ChessButton extends JButton {
 	public ChessButton(int x, int y) {
 		myX = x;
 		myY = y;
-		setBorderPainted(true);
+		setBorder(new LineBorder(Color.RED, 5));
+		setBorderPainted(false);
 		if((x+y)%2 == 1) setBackground(Color.BLACK);
 		else setBackground(Color.WHITE);
 	}
@@ -47,12 +49,12 @@ public class ChessButton extends JButton {
 	}
 	
 	public void activate() {
-		setBorderPainted(false);
+		setBorderPainted(true);
 		repaint();
 	}
 	
 	public void deactivate() {
-		setBorderPainted(true);
+		setBorderPainted(false);
 		repaint();
 	}
 	

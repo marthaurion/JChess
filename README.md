@@ -9,9 +9,9 @@ Things that are done:
 - Can tell when the king is in check
 - Created attack maps for checking threatened squares
 - Move list displays each move that has been played
+- Chess pieces are images
 
 Things to be done:
-- Chess pieces should be images.
 - Checkmate detection
 - Add online aspect back.
 - Create an AI.
