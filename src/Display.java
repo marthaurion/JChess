@@ -3,6 +3,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -26,6 +27,16 @@ public class Display implements ActionListener {
 		sourceY = -1;
 		sourceButton = null;
 		movelist = new JLabel();
+	}
+	
+	public ChessButton getButtonAt(int x, int y) {
+		Component[] comps = panel.getComponents();
+		ChessButton tempB;
+		for(int i = 0; i < comps.length; i++) {
+			tempB = (ChessButton)comps[i];
+			if(tempB.getMyX() == x && tempB.getMyY() == y) return tempB;
+		}
+		return null;
 	}
 	
 	public void endGame(PieceColor c) {
