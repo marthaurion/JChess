@@ -15,7 +15,7 @@ public class ChessButton extends JButton {
 		myY = y;
 		setBorder(new LineBorder(Color.RED, 5));
 		setBorderPainted(false);
-		if((x+y)%2 == 1) setBackground(Color.BLACK);
+		if((x+y)%2 == 1) setBackground(Color.GRAY);
 		else setBackground(Color.WHITE);
 	}
 	
@@ -30,15 +30,15 @@ public class ChessButton extends JButton {
 		//otherwise create the path to the image and display it
 		String st = "images/";
 		
-		if(p.getColor() == PieceColor.White) st += "White ";
-		else if(p.getColor() == PieceColor.Black) st += "Black ";
+		if(p.getColor() == PieceColor.White) st += "w";
+		else if(p.getColor() == PieceColor.Black) st += "b";
 		
-		if(p.getName().equals("Pawn")) st += "P.png";
-		else if(p.getName().equals("King")) st += "K.png";
-		else if(p.getName().equals("Knight")) st += "N.png";
-		else if(p.getName().equals("Bishop")) st += "B.png";
-		else if(p.getName().equals("Queen")) st += "Q.png";
-		else if(p.getName().equals("Rook")) st += "R.png";
+		if(p.getName().equals("Pawn")) st += "p.png";
+		else if(p.getName().equals("King")) st += "k.png";
+		else if(p.getName().equals("Knight")) st += "n.png";
+		else if(p.getName().equals("Bishop")) st += "b.png";
+		else if(p.getName().equals("Queen")) st += "q.png";
+		else if(p.getName().equals("Rook")) st += "r.png";
 		else {
 			System.out.println("Something went wrong.");
 			System.exit(0);

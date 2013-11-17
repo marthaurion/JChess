@@ -16,3 +16,6 @@ Things to be done:
 - Castling and possibly en passant
 - Add online aspect back
 - Create an AI
+
+
+The images for the chess pieces were found [here](http://ixian.com/chess/) with permission from creator.
