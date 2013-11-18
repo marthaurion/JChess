@@ -7,6 +7,9 @@ public class Board {
     private Square wKing;
     private Square bKing;
     
+    private boolean wCastle;
+    private boolean bCastle;
+    
     private ArrayList<String> moveList;
     
     public Board() {
@@ -15,6 +18,9 @@ public class Board {
         
         wKing = null;
         bKing = null;
+        
+        wCastle = true;
+        bCastle = true;
         
         moveList = new ArrayList<String>();
     }
@@ -45,6 +51,12 @@ public class Board {
     
     public ArrayList<String> getMoves() {
     	return moveList;
+    }
+    
+    public boolean canCastle(PieceColor c) {
+    	if(c == PieceColor.Black) return bCastle;
+    	else if(c == PieceColor.White) return wCastle;
+    	return false;
     }
     
     
@@ -218,26 +230,31 @@ public class Board {
     	//before the move is made, record the move in the movelist
     	updateMoveList(m);
     	
+    	//store locations
+    	int sx = m.getSource().getLocation().getX();
+    	int sy = m.getSource().getLocation().getY();
+    	int dx = m.getDest().getLocation().getX();
+    	int dy = m.getDest().getLocation().getY();
+    	
     	//store new king location if it moved
     	if(m.getSource().getName().equals("King")) {
-    		if(moved == PieceColor.White) wKing = m.getDest().getLocation();
-    		else if(moved == PieceColor.Black) bKing = m.getDest().getLocation();
+    		if(moved == PieceColor.White) {
+    			wKing = m.getDest().getLocation();
+    			wCastle = false;
+    		}
+    		else if(moved == PieceColor.Black) {
+    			bKing = m.getDest().getLocation();
+    			bCastle = false;
+    		}
     		else System.exit(0);
     	}
     	
-    	//send move first
-    	int x = m.getSource().getLocation().getX();
-    	int y = m.getSource().getLocation().getY();
+    	Piece temp = board[sy][sx];
     	
-    	Piece temp = board[y][x];
+    	board[sy][sx] = new NoPiece(sx, sy);
     	
-    	board[y][x] = new NoPiece(x, y);
-    	
-    	x = m.getDest().getLocation().getX();
-    	y = m.getDest().getLocation().getY();
-    	
-    	temp.setLocation(new Square(x, y));
-    	board[y][x] = temp;
+    	temp.setLocation(new Square(dx, dy));
+    	board[dy][dx] = temp;
     	
     	if(turn == PieceColor.White) turn = PieceColor.Black;
     	else turn = PieceColor.White;

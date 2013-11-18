@@ -57,6 +57,10 @@ public class King extends Piece {
 		list.add(new Square(x-1, y));
 		list.add(new Square(x-1, y-1));
 		
+		//add castle moves
+		if(color == PieceColor.White) list = addWhiteCastle(list);
+		else if(color == PieceColor.Black) list = addBlackCastle(list); 
+		
 		
 		//remove the moves that aren't legal
 		for(int i = 0; i < list.size(); i++) {
@@ -73,7 +77,47 @@ public class King extends Piece {
 			}
 		}
 		
+		
 		return list;
 	}
     
+	private ArrayList<Square> addWhiteCastle(ArrayList<Square> list) {
+		//method stub
+		if(!board.canCastle(PieceColor.White)) return list;
+		
+		//first check king's side
+		boolean flag = true;
+		
+		//check whether the squares between king and rook are empty
+		if(!isEmpty(5,0) | !isEmpty(6,0)) flag = false;
+		if(flag) list.add(new Square(6,0));
+		
+		//now check queen's side
+		flag = true;
+		
+		if(!isEmpty(1,0) | !isEmpty(2,0) | !isEmpty(3,0)) flag = false;
+		if(flag) list.add(new Square(2,0));
+		
+		return list;
+	}
+	
+	private ArrayList<Square> addBlackCastle(ArrayList<Square> list) {
+		//method stub
+		if(!board.canCastle(PieceColor.Black)) return list;
+		
+		//first check king's side
+		boolean flag = true;
+		
+		//check whether the squares between king and rook are empty
+		if(!isEmpty(5,7) | !isEmpty(6,7)) flag = false;
+		if(flag) list.add(new Square(6,7));
+		
+		//now check queen's side
+		flag = true;
+		
+		if(!isEmpty(1,7) | !isEmpty(2,7) | !isEmpty(3,7)) flag = false;
+		if(flag) list.add(new Square(2,7));
+		
+		return list;
+	}
 }

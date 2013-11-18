@@ -10,6 +10,7 @@ Things that are done:
 - Created attack maps for checking threatened squares
 - Move list displays each move that has been played
 - Chess pieces are images
+- Added a form of castling that doesn't work completely (only moves king and doesn't consider threats on castle path)
 
 Things to be done:
 - Checkmate detection
