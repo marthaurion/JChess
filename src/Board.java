@@ -26,16 +26,13 @@ public class Board {
     }
     
     /* getter functions */
-    public Piece[][] getBoard() {
-    	return board;
-    }
     
     //get the piece based on rank-file notation (such as g8)
     public Piece getPiece(String alg) {
     	if(alg.length() != 2) return null;
     	char file = alg.charAt(0);
     	int rank = Integer.parseInt(alg.substring(1));
-    	return board[rank-1][file-'a'];
+    	return getPiece(file-'a', rank-1);
     }
     
     //get a piece based on coordinates
@@ -58,6 +55,12 @@ public class Board {
     
     public ArrayList<String> getMoves() {
     	return moveList;
+    }
+    
+    
+    /* set functions */
+    public void setPiece(int x, int y, Piece piece) {
+    	board[y][x] = piece;
     }
     
     //if kingSide is true, check castle rights on king side
@@ -144,36 +147,36 @@ public class Board {
     	//the middle are empty squares
     	for(int i = 2; i < 6; i++) {
     		for(int j = 0; j < 8; j++) {
-    			board[i][j] = new NoPiece(j, i);
+    			setPiece(j, i, new NoPiece(j, i));
     		}
     	}
     	
     	//pawns
     	for(int i = 0; i < 8; i++) {
     		//make these pawns
-    		board[1][i] = new Pawn(i, 1, PieceColor.White, this);
-    		board[6][i] = new Pawn(i, 6, PieceColor.Black, this);
+    		setPiece(i, 1, new Pawn(i, 1, PieceColor.White, this));
+    		setPiece(i, 6, new Pawn(i, 6, PieceColor.Black, this));
     	}
     	
     	//white back row
-    	board[0][0] = new Rook(0, 0, PieceColor.White, this);
-    	board[0][1] = new Knight(1, 0, PieceColor.White, this);
-    	board[0][2] = new Bishop(2, 0, PieceColor.White, this);
-    	board[0][3] = new Queen(3, 0, PieceColor.White, this);
-    	board[0][4] = new King(4, 0, PieceColor.White, this);
-    	board[0][5] = new Bishop(5, 0, PieceColor.White, this);
-    	board[0][6] = new Knight(6, 0, PieceColor.White, this);
-    	board[0][7] = new Rook(7, 0, PieceColor.White, this);
+    	setPiece(0, 0, new Rook(0, 0, PieceColor.White, this));
+    	setPiece(1, 0, new Knight(1, 0, PieceColor.White, this));
+    	setPiece(2, 0, new Bishop(2, 0, PieceColor.White, this));
+    	setPiece(3, 0, new Queen(3, 0, PieceColor.White, this));
+    	setPiece(4, 0, new King(4, 0, PieceColor.White, this));
+    	setPiece(5, 0, new Bishop(5, 0, PieceColor.White, this));
+    	setPiece(6, 0, new Knight(6, 0, PieceColor.White, this));
+    	setPiece(7, 0, new Rook(7, 0, PieceColor.White, this));
     	
     	//black back row
-    	board[7][0] = new Rook(0, 7, PieceColor.Black, this);
-    	board[7][1] = new Knight(1, 7, PieceColor.Black, this);
-    	board[7][2] = new Bishop(2, 7, PieceColor.Black, this);
-    	board[7][3] = new Queen(3, 7, PieceColor.Black, this);
-    	board[7][4] = new King(4, 7, PieceColor.Black, this);
-    	board[7][5] = new Bishop(5, 7, PieceColor.Black, this);
-    	board[7][6] = new Knight(6, 7, PieceColor.Black, this);
-    	board[7][7] = new Rook(7, 7, PieceColor.Black, this);
+    	setPiece(0, 7, new Rook(0, 7, PieceColor.Black, this));
+    	setPiece(1, 7, new Knight(1, 7, PieceColor.Black, this));
+    	setPiece(2, 7, new Bishop(2, 7, PieceColor.Black, this));
+    	setPiece(3, 7, new Queen(3, 7, PieceColor.Black, this));
+    	setPiece(4, 7, new King(4, 7, PieceColor.Black, this));
+    	setPiece(5, 7, new Bishop(5, 7, PieceColor.Black, this));
+    	setPiece(6, 7, new Knight(6, 7, PieceColor.Black, this));
+    	setPiece(7, 7, new Rook(7, 7, PieceColor.Black, this));
     	
     	//store locations of king so they can be checked
     	wKing = new Square(4, 0);
@@ -195,7 +198,7 @@ public class Board {
     	
     	for(int i = 0; i < 8; i++) {
     		for(int j = 0; j < 8; j++) {
-    			moves = board[i][j].getThreatList();
+    			moves = getPiece(j, i).getThreatList();
     			
     			if(moves != null) {
 	    			//loop through legal moves
@@ -205,7 +208,7 @@ public class Board {
 	    				y = moves.get(k).getY();
 	    				
 	    				//add pieces of the opposite color
-	    				if(board[i][j].getColor() != col) map[y][x]++;
+	    				if(getPiece(j, i).getColor() != col) map[y][x]++;
 	    			}
     			}
     		}
@@ -217,7 +220,7 @@ public class Board {
     public void printBoard() {
     	for(int i = 7; i >= 0; i--) {
     		for(int j = 0; j < 8; j++) {
-    			System.out.print(""+board[i][j].getColor().toString().charAt(0)+board[i][j].getName().charAt(0)+"\t");
+    			System.out.print(""+getPiece(j, i).getColor().toString().charAt(0)+getPiece(j, i).getName().charAt(0)+"\t");
     		}
     		System.out.println();
     	}
@@ -291,12 +294,12 @@ public class Board {
     		}
     	}
     	
-    	Piece temp = board[sy][sx];
+    	Piece temp = getPiece(sx, sy);
     	
-    	board[sy][sx] = new NoPiece(sx, sy);
+    	setPiece(sx, sy, new NoPiece(sx, sy));
     	
     	temp.setLocation(new Square(dx, dy));
-    	board[dy][dx] = temp;
+    	setPiece(dx, dy, temp);
     	
     	if(turn == PieceColor.White) turn = PieceColor.Black;
     	else turn = PieceColor.White;
@@ -309,38 +312,38 @@ public class Board {
     		if(moved == PieceColor.White) { 
 	    		//if king moved positive x, then moved king side
 	    		if(dx - sx == 2) {
-	    			temp = board[0][7];
-	    			board[0][7] = new NoPiece(7, 0);
+	    			temp = getPiece(7, 0);
+	    			setPiece(7, 0, new NoPiece(7, 0));
 	    			
 	    			temp.setLocation(new Square(5,0));
-	    			board[0][5] = temp;
+	    			setPiece(5, 0, temp);
 	    		}
 	    		
 	    		else if(sx - dx == 2) {
-	    			temp = board[0][0];
-	    			board[0][0] = new NoPiece(0, 0);
+	    			temp = getPiece(0, 0);
+	    			setPiece(0, 0, new NoPiece(0, 0));
 	    			
 	    			temp.setLocation(new Square(3, 0));
-	    			board[0][3] = temp;
+	    			setPiece(3, 0, temp);
 	    		}
     		}
     		
     		if(moved == PieceColor.Black) { 
 	    		//if king moved positive x, then moved king side
 	    		if(dx - sx == 2) {
-	    			temp = board[7][7];
-	    			board[7][7] = new NoPiece(7, 7);
+	    			temp = getPiece(7, 7);
+	    			setPiece(7, 7, new NoPiece(7, 7));
 	    			
 	    			temp.setLocation(new Square(5, 7));
-	    			board[7][5] = temp;
+	    			setPiece(5, 7, temp);
 	    		}
 	    		
 	    		else if(sx - dx == 2) {
-	    			temp = board[7][0];
-	    			board[7][0] = new NoPiece(0, 7);
+	    			temp = getPiece(0, 7);
+	    			setPiece(0, 7, new NoPiece(0, 7));
 	    			
 	    			temp.setLocation(new Square(3, 7));
-	    			board[7][3] = temp;
+	    			setPiece(3, 7, temp);
 	    		}
     		}
     	}
@@ -348,6 +351,24 @@ public class Board {
 
     //simple for now, but want to add support for castling and such later
     private void updateMoveList(Move m) {
+    	//first check for castling move
+    	if(m.getSource().getName().equals("King")) {
+        	int sx = m.getSource().getLocation().getX();
+        	int dx = m.getDest().getLocation().getX();
+        	
+        	//castle king side
+        	if(dx - sx == 2) {
+        		moveList.add("0-0");
+        		return;
+        	}
+        	//castle queen side
+        	else if(sx - dx == 2) {
+        		moveList.add("0-0-0");
+        		return;
+        	}
+    	}
+    	
+    	//now do normal checks for moves
     	//if no piece, normal notation
     	if(m.getDest().getName().equals("None")) {
     		moveList.add(m.getSource().getID() + m.getDest().getLocation().getNotation());
