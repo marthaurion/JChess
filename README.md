@@ -15,7 +15,7 @@ Things that are done:
 Things to be done:
 - Need to keep testing castling for bugs.
 - Checkmate detection
-- En Passant
+- En Passant and Pawn Promotion
 - Add online aspect back
 - Create an AI
 - Show all possible moves
