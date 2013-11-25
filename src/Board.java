@@ -1,14 +1,14 @@
 import java.util.ArrayList;
 
 public class Board {
+	
     private Piece[][] board;
     private PieceColor turn;
     
     private Square wKing;
     private Square bKing;
     
-    private boolean wCastle;
-    private boolean bCastle;
+    private boolean[] castle; //use an array to factor in kingside/queenside
     
     private ArrayList<String> moveList;
     
@@ -19,8 +19,8 @@ public class Board {
         wKing = null;
         bKing = null;
         
-        wCastle = true;
-        bCastle = true;
+        boolean[] temp = {true, true, true, true};
+        castle = temp;
         
         moveList = new ArrayList<String>();
     }
@@ -53,12 +53,31 @@ public class Board {
     	return moveList;
     }
     
-    public boolean canCastle(PieceColor c) {
-    	if(c == PieceColor.Black) return bCastle;
-    	else if(c == PieceColor.White) return wCastle;
+    //if kingSide is true, check castle rights on king side
+    //otherwise check queen side
+    public boolean canCastle(PieceColor c, boolean kingSide) {
+    	if(c == PieceColor.White) {
+    		if(kingSide) return castle[0];
+    		else return castle[1];
+    	}
+    	else if(c == PieceColor.Black) {
+    		if(kingSide) return castle[2];
+    		else return castle[3];
+    	}
     	return false;
     }
     
+    //removes castling rights
+    public void removeCastle(PieceColor c, boolean kingSide) {
+    	if(c == PieceColor.White) {
+    		if(kingSide) castle[0] = false;
+    		else castle[1] = false;
+    	}
+    	else if(c == PieceColor.Black) {
+    		if(kingSide) castle[2] = false;
+    		else castle[3] = false;
+    	}
+    }
     
     //returns 0 if tie, -1 if black win, 1 if white wins, and 2 if no win
     //impossible to tie so far...will add functionality later
@@ -235,18 +254,38 @@ public class Board {
     	int sy = m.getSource().getLocation().getY();
     	int dx = m.getDest().getLocation().getX();
     	int dy = m.getDest().getLocation().getY();
+    	String name_moved = m.getSource().getName();
     	
     	//store new king location if it moved
-    	if(m.getSource().getName().equals("King")) {
+    	if(name_moved.equals("King")) {
     		if(moved == PieceColor.White) {
     			wKing = m.getDest().getLocation();
-    			wCastle = false;
+    			
+    			//remove castle rights on both sides
+    			castle[0] = false;
+    			castle[1] = false;
     		}
     		else if(moved == PieceColor.Black) {
     			bKing = m.getDest().getLocation();
-    			bCastle = false;
+    			
+    			//remove castle rights on both sides
+    			castle[2] = false;
+    			castle[3] = false;
     		}
     		else System.exit(0);
+    	}
+    	
+    	//rook check for castling rights
+    	if(name_moved.equals("Rook")) {
+    		if(moved == PieceColor.White) {
+    			if(sx == 0 && sy == 0) removeCastle(moved, false);
+    			if(sx == 7 && sy == 0) removeCastle(moved, true);
+    		}
+    		
+    		else if(moved == PieceColor.Black) {
+    			if(sx == 0 && sy == 7) removeCastle(moved, false);
+    			if(sx == 7 && sy == 7) removeCastle(moved, true);
+    		}
     	}
     	
     	Piece temp = board[sy][sx];
@@ -258,6 +297,50 @@ public class Board {
     	
     	if(turn == PieceColor.White) turn = PieceColor.Black;
     	else turn = PieceColor.White;
+    	
+    	
+    	
+    	//check if the move was a castle
+    	if(name_moved.equals("King")) {
+    		
+    		if(moved == PieceColor.White) { 
+	    		//if king moved positive x, then moved king side
+	    		if(dx - sx == 2) {
+	    			temp = board[0][7];
+	    			board[0][7] = new NoPiece(7, 0);
+	    			
+	    			temp.setLocation(new Square(5,0));
+	    			board[0][5] = temp;
+	    		}
+	    		
+	    		else if(sx - dx == 2) {
+	    			temp = board[0][0];
+	    			board[0][0] = new NoPiece(0, 0);
+	    			
+	    			temp.setLocation(new Square(3, 0));
+	    			board[0][3] = temp;
+	    		}
+    		}
+    		
+    		if(moved == PieceColor.Black) { 
+	    		//if king moved positive x, then moved king side
+	    		if(dx - sx == 2) {
+	    			temp = board[7][7];
+	    			board[7][7] = new NoPiece(7, 7);
+	    			
+	    			temp.setLocation(new Square(5, 7));
+	    			board[7][5] = temp;
+	    		}
+	    		
+	    		else if(sx - dx == 2) {
+	    			temp = board[7][0];
+	    			board[7][0] = new NoPiece(0, 7);
+	    			
+	    			temp.setLocation(new Square(3, 7));
+	    			board[7][3] = temp;
+	    		}
+    		}
+    	}
     }
 
     //simple for now, but want to add support for castling and such later

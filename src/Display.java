@@ -140,6 +140,15 @@ public class Display implements ActionListener {
 				Piece src = board.getPiece(sourceX, sourceY);
 				Piece dest = board.getPiece(x, y);
 				Move m = new Move(src, dest);
+				
+				//these variables are the castling check later
+				//I know this is bad. I'll fix it later. This is just to get something working.
+		    	int sx = m.getSource().getLocation().getX();
+		    	int dx = m.getDest().getLocation().getX();
+		    	PieceColor moved = m.getSource().getColor();
+		    	String name_moved = m.getSource().getName();
+		    	
+		    	
 				boolean flag = board.tryMove(m);
 				//reset now that the move has been registered
 				sourceX = -1;
@@ -154,7 +163,51 @@ public class Display implements ActionListener {
 						endGame(src.getColor());
 						return;
 					}
-					else board.makeMove(m);
+					
+					board.makeMove(m);
+					
+					
+					//check for castling
+					//I know this is inefficient. This is just a base version to get it working.
+					
+			    	//check if the move was a castle
+			    	if(name_moved.equals("King")) {
+			    		ChessButton tempSource = null;
+			    		ChessButton tempDest = null;
+			    		if(moved == PieceColor.White) { 
+				    		//if king moved positive x, then moved king side
+				    		if(dx - sx == 2) {
+				    			tempSource = getButtonAt(7, 0);
+				    			tempDest = getButtonAt(5, 0);
+				    		}
+				    		
+				    		else if(sx - dx == 2) {
+				    			tempSource = getButtonAt(0, 0);
+				    			tempDest = getButtonAt(3, 0);
+				    		}
+			    		}
+			    		
+			    		if(moved == PieceColor.Black) { 
+				    		//if king moved positive x, then moved king side
+				    		if(dx - sx == 2) {
+				    			tempSource = getButtonAt(7, 7);
+				    			tempDest = getButtonAt(5, 7);
+				    		}
+				    		
+				    		else if(sx - dx == 2) {
+				    			tempSource = getButtonAt(0, 7);
+				    			tempDest = getButtonAt(3, 7);
+				    		}
+			    		}
+			    		
+			    		if(tempSource != null && tempDest != null) {
+			    			tempSource.setPiece(board.getPiece(tempSource.getMyX(), tempSource.getMyY()));
+			    			tempDest.setPiece(board.getPiece(tempDest.getMyX(), tempDest.getMyY()));
+			    			tempSource.repaint();
+			    			tempDest.repaint();
+			    		}
+			    	}
+					
 					
 					//update movelist
 					displayMoves();

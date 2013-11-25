@@ -10,11 +10,12 @@ Things that are done:
 - Created attack maps for checking threatened squares
 - Move list displays each move that has been played
 - Chess pieces are images
-- Added a form of castling that doesn't work completely (only moves king and doesn't consider threats on castle path)
+- Added a slightly improved form of castling.
 
 Things to be done:
+- Need to keep testing castling for bugs.
 - Checkmate detection
-- Castling and possibly en passant
+- En Passant
 - Add online aspect back
 - Create an AI
 - Show all possible moves
