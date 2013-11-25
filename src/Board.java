@@ -43,6 +43,13 @@ public class Board {
     	return board[y][x];
     }
     
+    //returns the location of a king based on input color
+    public Square getKing(PieceColor c) {
+    	if(c == PieceColor.White) return wKing;
+    	else if(c == PieceColor.Black) return bKing;
+    	return null;
+    }
+    
     //just for displaying current turn
     public String getTurn() {
     	if(turn == PieceColor.White) return "White";
@@ -68,7 +75,7 @@ public class Board {
     }
     
     //removes castling rights
-    public void removeCastle(PieceColor c, boolean kingSide) {
+    private void removeCastle(PieceColor c, boolean kingSide) {
     	if(c == PieceColor.White) {
     		if(kingSide) castle[0] = false;
     		else castle[1] = false;
@@ -85,9 +92,11 @@ public class Board {
     	boolean surrounded = true; //stores whether king has safe moves
     	boolean check;
     	
-    	//check white king first
-    	ArrayList<Square> moves = board[wKing.getY()][wKing.getX()].getLegalMoves();
-    	int[][] map = generateAttackMaps(PieceColor.White);
+    	//check the current turn's king to see whether it's safe or not
+    	Square kingSquare = getKing(turn);
+    	
+    	ArrayList<Square> moves = board[kingSquare.getY()][kingSquare.getX()].getLegalMoves();
+    	int[][] map = generateAttackMaps(turn);
     	
     	for(int i = 0; i < moves.size(); i++) {
     		if(map[moves.get(i).getY()][moves.get(i).getX()] == 0) {
@@ -95,24 +104,24 @@ public class Board {
     		}
     	}
     	
-    	check = isCheck(PieceColor.White);
-    	if(check && surrounded) return -1; //black win if white king in check and can't move
-    	if(check) System.out.println("Check on White King!");
-    	//check black king now
-    	surrounded = true;
+    	check = isCheck(turn);
     	
-    	moves = board[bKing.getY()][bKing.getX()].getLegalMoves();
-    	map = generateAttackMaps(PieceColor.Black);
-    	
-    	for(int i = 0; i < moves.size(); i++) {
-    		if(map[moves.get(i).getY()][moves.get(i).getX()] == 0) {
-    			surrounded = false;
-    		}
+    	//change this code to be some sort of checkmate detection
+    	if(check && surrounded) {
+    		//we need to check whether there is a legal move that puts the king out of check
+    		//we need to loop through all pieces of the same color as the turn and make all legal moves
+    		//then after each move, check whether the king is still in check
+    		
+    		
+    		//first generate a list of all pieces that aren't the king
+    		
+    		if(turn == PieceColor.White) return -1; //black win if white king in check and can't move
+    		if(turn == PieceColor.Black) return 1;
     	}
     	
-    	check = isCheck(PieceColor.Black);
-    	if(check && surrounded) return 1; //white win if black king in check and can't move
-    	if(check) System.out.println("Check on Black King!");
+    	
+    	if(check) System.out.println("Check on " + turn + " King!");
+    	
     	//if all of these fail, the game isn't over yet
     	return 2;
     }
@@ -120,15 +129,9 @@ public class Board {
     //returns whether the input color's king is in check
     private boolean isCheck(PieceColor c) {
     	int[][] map = generateAttackMaps(c);
-    	int x, y;
-    	if(c == PieceColor.White) {
-    		x = wKing.getX();
-    		y = wKing.getY();
-    	}
-    	else {
-    		x = bKing.getX();
-    		y = bKing.getY();
-    	}
+    	int x = getKing(c).getX();
+    	int y = getKing(c).getY();
+
     	//if the king is being threatened, return true
     	if(map[y][x] > 0) return true;
     	else return false;
@@ -344,7 +347,7 @@ public class Board {
     }
 
     //simple for now, but want to add support for castling and such later
-    public void updateMoveList(Move m) {
+    private void updateMoveList(Move m) {
     	//if no piece, normal notation
     	if(m.getDest().getName().equals("None")) {
     		moveList.add(m.getSource().getID() + m.getDest().getLocation().getNotation());
