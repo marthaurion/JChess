@@ -40,6 +40,24 @@ public class Board {
     	return board[y][x];
     }
     
+    //returns a list of all pieces on the board with the input color
+    private ArrayList<Piece> getPieces(PieceColor col) {
+    	ArrayList<Piece> pieces = new ArrayList<Piece>();
+    	Piece temp;
+    	
+    	for(int i = 0; i < 8; i++) {
+    		for(int j = 0; j < 8; j++) {
+    			temp = getPiece(j, i);
+    			
+    			//add piece to list if it's the same color
+    			//NoPieces have their own color, so they won't pass this test
+    			if(temp.getColor() == col) pieces.add(temp);
+    		}
+    	}
+    	
+    	return pieces;
+    }
+    
     //returns the location of a king based on input color
     public Square getKing(PieceColor c) {
     	if(c == PieceColor.White) return wKing;
@@ -47,20 +65,27 @@ public class Board {
     	return null;
     }
     
-    //just for displaying current turn
-    public String getTurn() {
-    	if(turn == PieceColor.White) return "White";
-    	else return "Black";
+    //return current turn
+    public PieceColor getTurn() {
+    	return turn;
     }
     
     public ArrayList<String> getMoves() {
     	return moveList;
     }
     
-    
     /* set functions */
     public void setPiece(int x, int y, Piece piece) {
     	board[y][x] = piece;
+    }
+    
+    public void setTurn(PieceColor c) {
+    	turn = c;
+    }
+    
+    public void setKing(PieceColor c, Square s) {
+    	if(c == PieceColor.White) wKing = s;
+    	else if(c == PieceColor.Black) bKing = s;
     }
     
     //if kingSide is true, check castle rights on king side
@@ -87,6 +112,29 @@ public class Board {
     		if(kingSide) castle[2] = false;
     		else castle[3] = false;
     	}
+    }
+    
+    //copies this board to another board object
+    //currently, this might fail because I don't create new object instances
+    //I need to find a way to create pieces
+    private void copyBoard(Board b) {
+    	//first copy the pieces on the board
+    	for(int i = 0; i < 8; i++) {
+    		for(int j = 0; j < 8; j++) {
+    			b.setPiece(j, i, getPiece(j, i));
+    		}
+    	}
+    	
+    	//now copy the two kings
+    	b.setKing(PieceColor.White, new Square(wKing.getX(), wKing.getY()));
+    	b.setKing(PieceColor.Black, new Square(bKing.getX(), bKing.getY()));
+    	
+    	//copy the turn
+    	b.setTurn(turn);
+    	
+    	
+    	//copy castle rights
+    	//if necessary
     }
     
     //returns 0 if tie, -1 if black win, 1 if white wins, and 2 if no win
@@ -116,7 +164,16 @@ public class Board {
     		//then after each move, check whether the king is still in check
     		
     		
-    		//first generate a list of all pieces that aren't the king
+    		//first generate a list of all pieces for the turn color
+    		ArrayList<Piece> pieces = getPieces(turn);
+    		
+    		boolean freedom;
+    		
+    		//now for each piece, check whether moving that piece can get the king out of check
+    		for(int i = 0; i < pieces.size(); i++) {
+    			freedom = simulate(pieces.get(i));
+    			if(freedom) return 2; //if the king can move, then the game isn't over yet
+    		}
     		
     		if(turn == PieceColor.White) return -1; //black win if white king in check and can't move
     		if(turn == PieceColor.Black) return 1;
@@ -127,6 +184,26 @@ public class Board {
     	
     	//if all of these fail, the game isn't over yet
     	return 2;
+    }
+    
+    //this should return true if moving the piece gets the king out of check
+    //return false if there is no move that gets the king out of check
+    private boolean simulate(Piece p) {
+    	ArrayList<Square> moves = p.getLegalMoves();
+    	Square temp;
+    	
+    	//need to copy the board
+    	Board copy = null;
+    	
+    	for(int i = 0; i < moves.size(); i++) {
+    		temp = moves.get(i);
+    		copy = new Board();
+    		copyBoard(copy); //need to change this so that it copies the current board
+    		copy.makeMove(new Move(p, getPiece(temp.getX(), temp.getY())));
+    		if(!isCheck(p.getColor())) return true;
+    	}
+    	
+    	return false;
     }
     
     //returns whether the input color's king is in check
@@ -196,22 +273,23 @@ public class Board {
     		System.exit(0);
     	}
     	
-    	for(int i = 0; i < 8; i++) {
-    		for(int j = 0; j < 8; j++) {
-    			moves = getPiece(j, i).getThreatList();
-    			
-    			if(moves != null) {
-	    			//loop through legal moves
-	    			//add 1 to the target square's map
-	    			for(int k = 0; k < moves.size(); k++) {
-	    				x = moves.get(k).getX();
-	    				y = moves.get(k).getY();
-	    				
-	    				//add pieces of the opposite color
-	    				if(getPiece(j, i).getColor() != col) map[y][x]++;
-	    			}
+    	//generate a list of all opposing pieces
+    	ArrayList<Piece> pieces = getPieces(PieceColor.opposite(col));
+    	
+    	for(int i = 0; i < pieces.size(); i++) {
+			moves = pieces.get(i).getThreatList();
+			
+			if(moves != null) {
+    			//loop through legal moves
+    			//add 1 to the target square's map
+    			for(int j = 0; j < moves.size(); j++) {
+    				x = moves.get(j).getX();
+    				y = moves.get(j).getY();
+    				
+    				//add each possible move to the threat map
+    				map[y][x]++;
     			}
-    		}
+			}
     	}
     	return map;
     }

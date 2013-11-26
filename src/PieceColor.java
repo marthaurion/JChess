@@ -13,7 +13,7 @@ public enum PieceColor {
 		}
 	}
 	
-	public PieceColor opposite(PieceColor c) {
+	public static PieceColor opposite(PieceColor c) {
 		if(c == PieceColor.White) {
 			return PieceColor.Black;
 		}
