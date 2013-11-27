@@ -40,13 +40,13 @@ public class Display implements ActionListener {
 	}
 	
 	public void endGame(PieceColor c) {
+		displayMoves();
 		if(c == PieceColor.None) {
 			JOptionPane.showMessageDialog(frame, "Game Over. It's a tie!");
 		}
 		else {
 			JOptionPane.showMessageDialog(frame, "Game Over. "+c.toString()+" wins!");
 		}
-		
 		frame.dispose();
 	}
 
@@ -208,10 +208,6 @@ public class Display implements ActionListener {
 			    		}
 			    	}
 					
-					
-					//update movelist
-					displayMoves();
-					
 					sourceButton.setPiece(new NoPiece(x,y)); //empty old square
 					sourceButton.deactivate();
 					source.setPiece(src); //set destination square to be source piece
@@ -220,6 +216,11 @@ public class Display implements ActionListener {
 					
 					//after making the move, check if the king is checkmated
 					int temp = board.gameState();
+					
+					//first update movelist
+					displayMoves();
+					
+					//then check for endgame conditions
 					if(temp == 1) endGame(PieceColor.White);
 					else if(temp == -1) endGame(PieceColor.Black);
 					else if(temp == 0) endGame(PieceColor.None);

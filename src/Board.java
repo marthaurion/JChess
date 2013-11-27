@@ -146,7 +146,6 @@ public class Board {
     		//we need to loop through all pieces of the same color as the turn and make all legal moves
     		//then after each move, check whether the king is still in check
     		
-    		System.out.println("Check on " + turn + " King!");
     		//first generate a list of all pieces for the turn color
     		ArrayList<Piece> pieces = getPieces(turn);
     		
@@ -155,7 +154,11 @@ public class Board {
     		//now for each piece, check whether moving that piece can get the king out of check
     		for(int i = 0; i < pieces.size(); i++) {
     			freedom = simulate(pieces.get(i), turn);
-    			if(freedom) return 2; //if the king can move, then the game isn't over yet
+    			if(freedom) {
+    	    		updateCheckMove();
+    	    		System.out.println("Check on " + turn + " King!");
+    				return 2; //if the king can move, then the game isn't over yet
+    			}
     		}
     		
     		if(turn == PieceColor.White) return -1; //black win if white king in check and can't move
@@ -300,8 +303,16 @@ public class Board {
     }
     
     public void printMoveList() {
+    	int x = 1;
     	for(int i = 0; i < moveList.size(); ++i) {
-    		System.out.println(moveList.get(i));
+    		if(i%2 == 0) {
+    			System.out.print("" + x + ". " + moveList.get(i));
+    			x++;
+    		}
+    		else {
+    			System.out.print(" "+moveList.get(i));
+    			System.out.println();
+    		}
     	}
     }
     
@@ -444,6 +455,14 @@ public class Board {
     	}
     	else {
     		moveList.add(m.getSource().getID() + "x" + m.getDest().getLocation().getNotation());
+    	}
+    }
+    
+    //a simple function that adds check notation to the last move
+    private void updateCheckMove() {
+    	if(moveList.size() > 0) {
+    		int x = moveList.size()-1;
+    		moveList.set(x, moveList.get(x)+"+");
     	}
     }
 }
