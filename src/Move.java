@@ -54,41 +54,15 @@ public class Move {
 		int x = Integer.parseInt(src[0]);
 		int y = Integer.parseInt(src[1]);
 		
-		Piece p1 = createPiece(toks[0], x, y, PieceColor.fromString(toks[2]), board);
+		Piece p1 = PieceFactory.createPiece(toks[0], x, y, PieceColor.fromString(toks[2]), board);
 		
 		String[] dest = toks[4].split(","); //parse the destination square
 		x = Integer.parseInt(dest[0]);
 		y = Integer.parseInt(dest[1]);
 		
-		Piece p2 = createPiece(toks[3], x, y, PieceColor.fromString(toks[5]), board); 
+		Piece p2 = PieceFactory.createPiece(toks[3], x, y, PieceColor.fromString(toks[5]), board); 
 		
 		Move m = new Move(p1, p2);
 		return m;
-	}
-	
-	//creates a pieces based on a string saying what kind of piece
-	private static Piece createPiece(String s, int x, int y, PieceColor color, Board board) {
-		if(s.equals("None")) {
-			return new NoPiece(x, y);
-		}
-		else if(s.equals("Pawn")) {
-			return new Pawn(x, y, color, board);
-		}
-		else if(s.equals("Knight")) {
-			return new Knight(x, y, color, board);
-		}
-		else if(s.equals("Bishop")) {
-			return new Bishop(x, y, color, board);
-		}
-		else if(s.equals("Rook")) {
-			return new Rook(x, y, color, board);
-		}
-		else if(s.equals("Queen")) {
-			return new Queen(x, y, color, board);
-		}
-		else if(s.equals("King")) {
-			return new King(x, y, color, board);
-		}
-		else return null;
 	}
 }

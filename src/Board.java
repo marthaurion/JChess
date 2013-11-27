@@ -121,7 +121,7 @@ public class Board {
     	//first copy the pieces on the board
     	for(int i = 0; i < 8; i++) {
     		for(int j = 0; j < 8; j++) {
-    			b.setPiece(j, i, copyPiece(getPiece(j, i), b));
+    			b.setPiece(j, i, PieceFactory.createPiece(getPiece(j, i), b));
     		}
     	}
     	
@@ -133,23 +133,6 @@ public class Board {
     	b.setTurn(turn);
     	
     	//no need to copy castle rights because you can't castle while in check anyway
-    }
-    
-    //returns a new piece with the same attributes as the input piece
-    private Piece copyPiece(Piece p, Board b) {
-    	int x = p.getLocation().getX();
-    	int y = p.getLocation().getY();
-    	PieceColor c = p.getColor();
-    	
-    	if(p.getName().equals("None")) return new NoPiece(x, y);
-    	else if(p.getName().equals("Pawn")) return new Pawn(x, y, c, b);
-    	else if(p.getName().equals("Knight")) return new Knight(x, y, c, b);
-    	else if(p.getName().equals("Bishop")) return new Bishop(x, y, c, b);
-    	else if(p.getName().equals("King")) return new King(x, y, c, b);
-    	else if(p.getName().equals("Queen")) return new Queen(x, y, c, b);
-    	else if(p.getName().equals("Rook")) return new Rook(x, y, c, b);
-    	
-    	return null;
     }
     
     //returns 0 if tie, -1 if black win, 1 if white wins, and 2 if no win
