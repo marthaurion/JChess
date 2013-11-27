@@ -121,7 +121,7 @@ public class Board {
     	//first copy the pieces on the board
     	for(int i = 0; i < 8; i++) {
     		for(int j = 0; j < 8; j++) {
-    			b.setPiece(j, i, getPiece(j, i));
+    			b.setPiece(j, i, copyPiece(getPiece(j, i), b));
     		}
     	}
     	
@@ -132,38 +132,38 @@ public class Board {
     	//copy the turn
     	b.setTurn(turn);
     	
+    	//no need to copy castle rights because you can't castle while in check anyway
+    }
+    
+    //returns a new piece with the same attributes as the input piece
+    private Piece copyPiece(Piece p, Board b) {
+    	int x = p.getLocation().getX();
+    	int y = p.getLocation().getY();
+    	PieceColor c = p.getColor();
     	
-    	//copy castle rights
-    	//if necessary
+    	if(p.getName().equals("None")) return new NoPiece(x, y);
+    	else if(p.getName().equals("Pawn")) return new Pawn(x, y, c, b);
+    	else if(p.getName().equals("Knight")) return new Knight(x, y, c, b);
+    	else if(p.getName().equals("Bishop")) return new Bishop(x, y, c, b);
+    	else if(p.getName().equals("King")) return new King(x, y, c, b);
+    	else if(p.getName().equals("Queen")) return new Queen(x, y, c, b);
+    	else if(p.getName().equals("Rook")) return new Rook(x, y, c, b);
+    	
+    	return null;
     }
     
     //returns 0 if tie, -1 if black win, 1 if white wins, and 2 if no win
     //impossible to tie so far...will add functionality later
     public int gameState() {
-    	boolean surrounded = true; //stores whether king has safe moves
-    	boolean check;
-    	
-    	//check the current turn's king to see whether it's safe or not
-    	Square kingSquare = getKing(turn);
-    	
-    	ArrayList<Square> moves = board[kingSquare.getY()][kingSquare.getX()].getLegalMoves();
-    	int[][] map = generateAttackMaps(turn);
-    	
-    	for(int i = 0; i < moves.size(); i++) {
-    		if(map[moves.get(i).getY()][moves.get(i).getX()] == 0) {
-    			surrounded = false;
-    		}
-    	}
-    	
-    	check = isCheck(turn);
+    	boolean check = isCheck(turn);
     	
     	//change this code to be some sort of checkmate detection
-    	if(check && surrounded) {
+    	if(check) {
     		//we need to check whether there is a legal move that puts the king out of check
     		//we need to loop through all pieces of the same color as the turn and make all legal moves
     		//then after each move, check whether the king is still in check
     		
-    		
+    		System.out.println("Check on " + turn + " King!");
     		//first generate a list of all pieces for the turn color
     		ArrayList<Piece> pieces = getPieces(turn);
     		
@@ -171,7 +171,7 @@ public class Board {
     		
     		//now for each piece, check whether moving that piece can get the king out of check
     		for(int i = 0; i < pieces.size(); i++) {
-    			freedom = simulate(pieces.get(i));
+    			freedom = simulate(pieces.get(i), turn);
     			if(freedom) return 2; //if the king can move, then the game isn't over yet
     		}
     		
@@ -179,18 +179,17 @@ public class Board {
     		if(turn == PieceColor.Black) return 1;
     	}
     	
-    	
-    	if(check) System.out.println("Check on " + turn + " King!");
-    	
     	//if all of these fail, the game isn't over yet
     	return 2;
     }
     
     //this should return true if moving the piece gets the king out of check
     //return false if there is no move that gets the king out of check
-    private boolean simulate(Piece p) {
+    private boolean simulate(Piece p, PieceColor col) {
     	ArrayList<Square> moves = p.getLegalMoves();
     	Square temp;
+    	Move m;
+    	Piece piece;
     	
     	//need to copy the board
     	Board copy = null;
@@ -198,16 +197,20 @@ public class Board {
     	for(int i = 0; i < moves.size(); i++) {
     		temp = moves.get(i);
     		copy = new Board();
-    		copyBoard(copy); //need to change this so that it copies the current board
-    		copy.makeMove(new Move(p, getPiece(temp.getX(), temp.getY())));
-    		if(!isCheck(p.getColor())) return true;
+    		copyBoard(copy);
+    		piece = copy.getPiece(p.getLocation().getX(), p.getLocation().getY());
+    		m = new Move(piece, copy.getPiece(temp.getX(), temp.getY()));
+    		if(copy.tryMove(m)) {
+    			copy.makeMove(m);
+    			if(!copy.isCheck(col)) return true;
+    		}
     	}
     	
     	return false;
     }
     
     //returns whether the input color's king is in check
-    private boolean isCheck(PieceColor c) {
+    public boolean isCheck(PieceColor c) {
     	int[][] map = generateAttackMaps(c);
     	int x = getKing(c).getX();
     	int y = getKing(c).getY();

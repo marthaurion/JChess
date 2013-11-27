@@ -56,6 +56,7 @@ public class King extends Piece {
 	public ArrayList<Square> getLegalMoves() {
 		//similar to the knight because there are only 8 possible moves
 		ArrayList<Square> list = new ArrayList<Square>();
+		
 		int x = location.getX();
 		int y = location.getY();
 		
@@ -77,10 +78,12 @@ public class King extends Piece {
 			x = list.get(i).getX();
 			y = list.get(i).getY();
 			
+			//remove moves that aren't on the board
 			if(!onBoard(x, y)) {
 				list.remove(i);
 				i--;
 			}
+			//remove moves that land on squares with an ally
 			else if(!isEmpty(x, y) && !isEnemy(x, y, this)) {
 				list.remove(i);
 				i--;
@@ -96,6 +99,7 @@ public class King extends Piece {
 		boolean castleKing = board.canCastle(PieceColor.White, true);
 		boolean castleQueen = board.canCastle(PieceColor.White, false);
 		if(!castleKing && !castleQueen) return list;
+		if(board.isCheck(PieceColor.White)) return list; //don't let the king castle if in check
 		
 		int[][] atkMap = board.generateAttackMaps(PieceColor.White);
 		
@@ -123,6 +127,7 @@ public class King extends Piece {
 		boolean castleKing = board.canCastle(PieceColor.Black, true);
 		boolean castleQueen = board.canCastle(PieceColor.Black, false);
 		if(!castleKing && !castleQueen) return list;
+		if(board.isCheck(PieceColor.Black)) return list; //don't let the king castle if in check
 		
 		int[][] atkMap = board.generateAttackMaps(PieceColor.Black);
 		

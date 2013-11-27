@@ -11,10 +11,12 @@ Things that are done:
 - Move list displays each move that has been played
 - Chess pieces are images
 - Added a slightly improved form of castling.
+- Added a form of checkmate detection.
 
 Things to be done:
-- Need to keep testing castling for bugs.
-- Checkmate detection
+- Need to keep testing castling and checkmate detection for bugs.
+- Stop player from leaving king in check.
+- Add check to notation for move list.
 - En Passant and Pawn Promotion
 - Add online aspect back
 - Create an AI
