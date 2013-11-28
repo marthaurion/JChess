@@ -145,6 +145,7 @@ public class Display implements ActionListener {
 				//I know this is bad. I'll fix it later. This is just to get something working.
 		    	int sx = m.getSource().getLocation().getX();
 		    	int dx = m.getDest().getLocation().getX();
+		    	int dy = m.getDest().getLocation().getY();
 		    	PieceColor moved = m.getSource().getColor();
 		    	String name_moved = m.getSource().getName();
 		    	
@@ -165,7 +166,6 @@ public class Display implements ActionListener {
 					}
 					
 					board.makeMove(m);
-					
 					
 					//check for castling
 					//I know this is inefficient. This is just a base version to get it working.
@@ -200,6 +200,7 @@ public class Display implements ActionListener {
 				    		}
 			    		}
 			    		
+			    		//if we've populated tempSource and tempDest, then there is a castle
 			    		if(tempSource != null && tempDest != null) {
 			    			tempSource.setPiece(board.getPiece(tempSource.getMyX(), tempSource.getMyY()));
 			    			tempDest.setPiece(board.getPiece(tempDest.getMyX(), tempDest.getMyY()));
@@ -208,9 +209,10 @@ public class Display implements ActionListener {
 			    		}
 			    	}
 					
+			    	//update the panel with the move
 					sourceButton.setPiece(new NoPiece(x,y)); //empty old square
 					sourceButton.deactivate();
-					source.setPiece(src); //set destination square to be source piece
+					source.setPiece(board.getPiece(dx, dy)); //set destination square to be source piece
 					source.repaint();
 					sourceButton = null; //clear the source button
 					

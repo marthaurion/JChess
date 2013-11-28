@@ -12,12 +12,13 @@ Things that are done:
 - Chess pieces are images
 - Added a slightly improved form of castling.
 - Added a form of checkmate detection.
+- Pawn will auto-promote to queen.
 
 Things to be done:
 - Need to keep testing castling and checkmate detection for bugs.
 - Stop player from leaving king in check.
-- Add check to notation for move list.
-- En Passant and Pawn Promotion
+- Add checkmate to notation for move list and disambiguation for knights.
+- En Passant and better pawn promotion
 - Add online aspect back
 - Create an AI
 - Show all possible moves

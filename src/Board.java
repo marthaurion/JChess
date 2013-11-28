@@ -373,6 +373,11 @@ public class Board {
     	
     	setPiece(sx, sy, new NoPiece(sx, sy));
     	
+    	if(temp.getName().equals("Pawn") && ((Pawn)temp).getPromo() == dy) {
+    		temp = new Queen(dx, dy, temp.getColor(), this);
+    	}
+    	
+    	
     	temp.setLocation(new Square(dx, dy));
     	setPiece(dx, dy, temp);
     	

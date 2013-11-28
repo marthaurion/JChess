@@ -4,15 +4,23 @@ import java.util.ArrayList;
 public class Pawn extends Piece {
 	private PieceColor color;
 	private Square location;
+	private int promo;
 	
 	public Pawn(int x, int y, PieceColor c, Board b) {
 		color = c;
 		location = new Square(x, y);
 		board = b;
+		if(c == PieceColor.White) promo = 7;
+		else if(c == PieceColor.Black) promo = 0;
+		else promo = -1;
 	}
 	
 	public Square getLocation() {
 		return location;
+	}
+	
+	public int getPromo() {
+		return promo;
 	}
 	
 	public void setLocation(Square s) {
