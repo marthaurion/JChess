@@ -74,6 +74,17 @@ public class Board {
     	return moveList;
     }
     
+    //calculates the total material score of each player
+    public int getMaterialScore(PieceColor c) {
+    	int score = 0;
+    	ArrayList<Piece> pieces = getPieces(c);
+    	for(int i = 0; i < pieces.size(); ++i) {
+    		score += pieces.get(i).getValue();
+    	}
+    	
+    	return score;
+    }
+    
     /* set functions */
     public void setPiece(int x, int y, Piece piece) {
     	board[y][x] = piece;
