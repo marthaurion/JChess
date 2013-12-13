@@ -19,7 +19,7 @@ Things that are done:
 Things to be done:
 - Need to keep testing castling and checkmate detection for bugs.
 - Need more testing on the code to stop the player from leaving king in check.
-- Add checkmate to notation for move list and disambiguation for knights and rooks.
+- Add disambiguation for knights and rooks on the move list.
 - Add En Passant and better pawn promotion.
 - Add online aspect back.
 - Create an AI.

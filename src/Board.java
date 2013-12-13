@@ -166,11 +166,16 @@ public class Board {
     		for(int i = 0; i < pieces.size(); i++) {
     			freedom = simulate(pieces.get(i), turn);
     			if(freedom) {
-    	    		updateCheckMove();
+    	    		updateCheckMove(false);
     	    		System.out.println("Check on " + turn + " King!");
     				return 2; //if the king can move, then the game isn't over yet
     			}
     		}
+    		
+    		//the game is over if we reach this far, so we can assume checkmate
+    		//resignation logic will probably be specific to Display class
+    		
+    		updateCheckMove(true);
     		
     		if(turn == PieceColor.White) return -1; //black win if white king in check and can't move
     		if(turn == PieceColor.Black) return 1;
@@ -475,10 +480,11 @@ public class Board {
     }
     
     //a simple function that adds check notation to the last move
-    private void updateCheckMove() {
+    private void updateCheckMove(boolean mate) {
     	if(moveList.size() > 0) {
     		int x = moveList.size()-1;
-    		moveList.set(x, moveList.get(x)+"+");
+    		if(mate) moveList.set(x, moveList.get(x) + "#");
+    		else moveList.set(x, moveList.get(x)+"+");
     	}
     }
 }
