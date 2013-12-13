@@ -1,4 +1,17 @@
+package board;
 import java.util.ArrayList;
+
+import pieces.Bishop;
+import pieces.King;
+import pieces.Knight;
+import pieces.NoPiece;
+import pieces.Pawn;
+import pieces.Piece;
+import pieces.PieceColor;
+import pieces.PieceFactory;
+import pieces.Queen;
+import pieces.Rook;
+import pieces.Square;
 
 public class Board {
 	

@@ -1,3 +1,4 @@
+package pieces;
 public class Square {
     private char file; //columns marked a-h
     private int rank; //rows marked 1-8

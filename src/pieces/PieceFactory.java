@@ -1,3 +1,8 @@
+package pieces;
+import board.Board;
+
+
+
 
 public class PieceFactory {
 

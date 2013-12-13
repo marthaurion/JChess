@@ -1,8 +1,12 @@
+package view;
 import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
+
+import pieces.Piece;
+import pieces.PieceColor;
 
 
 public class ChessButton extends JButton {

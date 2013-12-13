@@ -6,6 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import board.Board;
+import view.Display;
+
 
 public class Test {
 	public static void main(String[] args) {

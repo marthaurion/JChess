@@ -1,4 +1,9 @@
+package pieces;
+
 import java.util.ArrayList;
+
+import board.Board;
+import board.Move;
 
 
 public class King extends Piece {
@@ -41,7 +46,7 @@ public class King extends Piece {
     
     // king overrides move so it can add castling as possible moves
     // without adding to threat list
-    protected boolean move(Move m) {
+    public boolean move(Move m) {
 		//first do basic checks
 		if(!checkPiece(m, this)) return false;
 		

@@ -1,4 +1,9 @@
+package pieces;
+
 import java.util.ArrayList;
+
+import board.Board;
+import board.Move;
 
 public abstract class Piece {
 	protected Board board;
@@ -15,12 +20,12 @@ public abstract class Piece {
     
     //returns a list of threatened squares for each piece
     //this is only here so the pawn can override it
-    protected ArrayList<Square> getThreatList() {
+    public ArrayList<Square> getThreatList() {
     	return getLegalMoves();
     }
     
     //moved this function to piece because it has become generalized
-    protected boolean move(Move m) {
+    public boolean move(Move m) {
 		//first do basic checks
 		if(!checkPiece(m, this)) return false;
 		

@@ -1,7 +1,16 @@
+package view;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import pieces.King;
+import pieces.NoPiece;
+import pieces.Piece;
+import pieces.PieceColor;
+import pieces.Square;
+import board.Board;
+import board.Move;
 
 import java.awt.Component;
 import java.awt.Dimension;
