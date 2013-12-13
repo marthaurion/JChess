@@ -26,7 +26,41 @@ public abstract class Piece {
 		
 		ArrayList<Square> list = getLegalMoves();
 		
+		list = checkKing(list);
+		
 		return checkList(m, list);
+    }
+    
+    //takes the input list of squares and test whether each one will put the king in check
+    //if so, the move is removed from the list
+    protected ArrayList<Square> checkKing(ArrayList<Square> input) {
+    	Board copy = null;
+    	Square temp;
+    	Move m;
+    	Piece src, dest;
+    	
+    	for(int i = 0; i < input.size(); i++) {
+    		temp = input.get(i);
+    		
+    		//copy the board
+    		copy = new Board();
+    		board.copyBoard(copy);
+    		
+    		//make the candidate move on the copy board
+    		src = copy.getPiece(getLocation().getX(), getLocation().getY());
+    		dest = copy.getPiece(temp.getX(), temp.getY());
+    		m = new Move(src, dest);
+    		copy.makeMove(m);
+    		
+    		//if the move puts the king in check, remove it from legal moves
+    		if(copy.isCheck(getColor())) {
+    			input.remove(i);
+    			i--;
+    		}
+    		
+    	}
+    	
+    	return input;
     }
     
 	protected boolean checkList(Move m, ArrayList<Square> l) {

@@ -46,9 +46,8 @@ public class King extends Piece {
 		if(!checkPiece(m, this)) return false;
 		
 		ArrayList<Square> list = getLegalMoves();
-    	
-		if(color == PieceColor.White) list = addWhiteCastle(list);
-		else if(color == PieceColor.Black) list = addBlackCastle(list);
+		
+		list = addCastle(list);
 		
 		return checkList(m, list);
     }
@@ -90,8 +89,13 @@ public class King extends Piece {
 			}
 		}
 		
-		
 		return list;
+	}
+	
+	public ArrayList<Square> addCastle(ArrayList<Square> list) {
+		if(color == PieceColor.White) return addWhiteCastle(list);
+		else if(color == PieceColor.Black) return addBlackCastle(list);
+		else return list;
 	}
     
 	private ArrayList<Square> addWhiteCastle(ArrayList<Square> list) {

@@ -128,7 +128,7 @@ public class Board {
     //copies this board to another board object
     //currently, this might fail because I don't create new object instances
     //I need to find a way to create pieces
-    private void copyBoard(Board b) {
+    public void copyBoard(Board b) {
     	//first copy the pieces on the board
     	for(int i = 0; i < 8; i++) {
     		for(int j = 0; j < 8; j++) {

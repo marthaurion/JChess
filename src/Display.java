@@ -123,6 +123,24 @@ public class Display implements ActionListener {
 			sourceY = source.getMyY();
 			sourceButton = source;
 			sourceButton.activate();
+			
+			//highlight all possible moves
+			Piece temp = board.getPiece(sourceButton.getMyX(), sourceButton.getMyY());
+			
+			//only highlight if it's the turn color
+			if(temp.getColor() == board.getTurn()) {
+				ArrayList<Square> moves = temp.getLegalMoves();
+				
+				//add the castle squares if it's a king
+				if(temp.getName().equals("King")) moves = ((King)temp).addCastle(moves);
+				
+				//loop through all possible moves and activate their buttons
+				Square sq;
+				for(int i = 0; i < moves.size(); i++) {
+					sq = moves.get(i);
+					getButtonAt(sq.getX(), sq.getY()).activatePossible();
+				}
+			}
 		}
 		//otherwise create the move and send to the model
 		else {
@@ -133,7 +151,7 @@ public class Display implements ActionListener {
 			if(sourceX == x && sourceY == y) {
 				sourceX = -1;
 				sourceY = -1;
-				sourceButton.deactivate();
+				clearBoard();
 				sourceButton = null;
 			}
 			else {
@@ -211,8 +229,10 @@ public class Display implements ActionListener {
 					
 			    	//update the panel with the move
 					sourceButton.setPiece(new NoPiece(x,y)); //empty old square
-					sourceButton.deactivate();
 					source.setPiece(board.getPiece(dx, dy)); //set destination square to be source piece
+					
+					clearBoard();
+					
 					source.repaint();
 					sourceButton = null; //clear the source button
 					
@@ -231,7 +251,7 @@ public class Display implements ActionListener {
 				
 				else {
 					System.out.println("Invalid move"); //for debug
-					sourceButton.deactivate();
+					clearBoard();
 					sourceButton = null;
 				}
 			}
@@ -240,4 +260,13 @@ public class Display implements ActionListener {
 		//endelse
 	}
 	
+	//deactivate every square on the board
+	//this might be more efficient than getting legal moves and deactivating them
+	public void clearBoard() {
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				getButtonAt(i, j).deactivate();
+			}
+		}
+	}
 }

@@ -48,7 +48,16 @@ public class ChessButton extends JButton {
 			
 	}
 	
+	//paints red if we're indicating the clicked piece
 	public void activate() {
+		setBorder(new LineBorder(Color.RED, 5));
+		setBorderPainted(true);
+		repaint();
+	}
+	
+	//paints blue if we're indicating possible squares
+	public void activatePossible() {
+		setBorder(new LineBorder(Color.BLUE, 5));
 		setBorderPainted(true);
 		repaint();
 	}
