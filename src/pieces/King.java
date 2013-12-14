@@ -54,6 +54,8 @@ public class King extends Piece {
 		
 		list = addCastle(list);
 		
+		list = checkKing(list);
+		
 		return checkList(m, list);
     }
 

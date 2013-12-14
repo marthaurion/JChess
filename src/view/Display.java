@@ -36,9 +36,10 @@ public class Display implements ActionListener {
 		sourceY = -1;
 		sourceButton = null;
 		movelist = new JLabel();
+		b.newGame();
 	}
 	
-	public ChessButton getButtonAt(int x, int y) {
+	private ChessButton getButtonAt(int x, int y) {
 		Component[] comps = panel.getComponents();
 		ChessButton tempB;
 		for(int i = 0; i < comps.length; i++) {
@@ -48,7 +49,7 @@ public class Display implements ActionListener {
 		return null;
 	}
 	
-	public void endGame(PieceColor c) {
+	private void endGame(PieceColor c) {
 		displayMoves();
 		if(c == PieceColor.None) {
 			JOptionPane.showMessageDialog(frame, "Game Over. It's a tie!");
@@ -79,7 +80,7 @@ public class Display implements ActionListener {
 		frame.setVisible(true);
 	}
 	
-	public JPanel displayBoard() {
+	private JPanel displayBoard() {
 		JPanel p = new JPanel();
 		p.setLayout(new GridLayout(8, 8));
 		p.setPreferredSize(new Dimension(600, 600));
@@ -97,27 +98,24 @@ public class Display implements ActionListener {
 	}
 	
 	//sets the text of the movelist label with the appropriate moves
-	public void displayMoves() {
+	private void displayMoves() {
 		ArrayList<String> moves = board.getMoves();
-		if(moves.size() == 0) {
-			movelist.setText("Moves");
-		}
+		if(moves.size() == 0) movelist.setText("Moves");
 		else {
 			StringBuilder str = new StringBuilder();
+			
 			//apparently JLabels use html
 			str.append("<html><body>Moves<br><ol>");
+			
 			for(int i = 0; i < moves.size(); i++) {
-				if(i%2 == 0) {
-					str.append("<li>");
-				}
+				if(i%2 == 0) str.append("<li>");
 				
 				str.append(moves.get(i)+"&nbsp;");
 				
 				// line break for every other move
-				if(i%2 == 1) {
-					str.append("</li>");
-				}
+				if(i%2 == 1) str.append("</li>");
 			}
+			
 			str.append("</ol></body></html>");
 			movelist.setText(str.toString());
 		}
@@ -133,23 +131,7 @@ public class Display implements ActionListener {
 			sourceButton = source;
 			sourceButton.activate();
 			
-			//highlight all possible moves
-			Piece temp = board.getPiece(sourceButton.getMyX(), sourceButton.getMyY());
-			
-			//only highlight if it's the turn color
-			if(temp.getColor() == board.getTurn()) {
-				ArrayList<Square> moves = temp.getLegalMoves();
-				
-				//add the castle squares if it's a king
-				if(temp.getName().equals("King")) moves = ((King)temp).addCastle(moves);
-				
-				//loop through all possible moves and activate their buttons
-				Square sq;
-				for(int i = 0; i < moves.size(); i++) {
-					sq = moves.get(i);
-					getButtonAt(sq.getX(), sq.getY()).activatePossible();
-				}
-			}
+			highlightPossible();
 		}
 		//otherwise create the move and send to the model
 		else {
@@ -163,6 +145,8 @@ public class Display implements ActionListener {
 				clearBoard();
 				sourceButton = null;
 			}
+			
+			//otherwise try the move and make if it is legal
 			else {
 				Piece src = board.getPiece(sourceX, sourceY);
 				Piece dest = board.getPiece(x, y);
@@ -198,43 +182,7 @@ public class Display implements ActionListener {
 					//I know this is inefficient. This is just a base version to get it working.
 					
 			    	//check if the move was a castle
-			    	if(name_moved.equals("King")) {
-			    		ChessButton tempSource = null;
-			    		ChessButton tempDest = null;
-			    		if(moved == PieceColor.White) { 
-				    		//if king moved positive x, then moved king side
-				    		if(dx - sx == 2) {
-				    			tempSource = getButtonAt(7, 0);
-				    			tempDest = getButtonAt(5, 0);
-				    		}
-				    		
-				    		else if(sx - dx == 2) {
-				    			tempSource = getButtonAt(0, 0);
-				    			tempDest = getButtonAt(3, 0);
-				    		}
-			    		}
-			    		
-			    		if(moved == PieceColor.Black) { 
-				    		//if king moved positive x, then moved king side
-				    		if(dx - sx == 2) {
-				    			tempSource = getButtonAt(7, 7);
-				    			tempDest = getButtonAt(5, 7);
-				    		}
-				    		
-				    		else if(sx - dx == 2) {
-				    			tempSource = getButtonAt(0, 7);
-				    			tempDest = getButtonAt(3, 7);
-				    		}
-			    		}
-			    		
-			    		//if we've populated tempSource and tempDest, then there is a castle
-			    		if(tempSource != null && tempDest != null) {
-			    			tempSource.setPiece(board.getPiece(tempSource.getMyX(), tempSource.getMyY()));
-			    			tempDest.setPiece(board.getPiece(tempDest.getMyX(), tempDest.getMyY()));
-			    			tempSource.repaint();
-			    			tempDest.repaint();
-			    		}
-			    	}
+			    	if(name_moved.equals("King")) processCastle(sx, dx, moved);
 					
 			    	//update the panel with the move
 					sourceButton.setPiece(new NoPiece(x,y)); //empty old square
@@ -269,9 +217,74 @@ public class Display implements ActionListener {
 		//endelse
 	}
 	
+	
+	//goes through and highlights all possible move squares
+	//for the source button if it is filled
+	private void highlightPossible() {
+		if(sourceButton == null) return;
+		
+		//highlight all possible moves
+		Piece temp = board.getPiece(sourceButton.getMyX(), sourceButton.getMyY());
+		
+		//only highlight if it's the turn color
+		if(temp.getColor() == board.getTurn()) {
+			ArrayList<Square> moves = temp.getLegalMoves();
+			moves = temp.checkKing(moves);
+			
+			//add the castle squares if it's a king
+			if(temp.getName().equals("King")) moves = ((King)temp).addCastle(moves);
+			
+			//loop through all possible moves and activate their buttons
+			Square sq;
+			for(int i = 0; i < moves.size(); i++) {
+				sq = moves.get(i);
+				getButtonAt(sq.getX(), sq.getY()).activatePossible();
+			}
+		}
+	}
+	
+	//checks for a castling move
+	private void processCastle(int sx, int dx, PieceColor moved) {
+		ChessButton tempSource = null;
+		ChessButton tempDest = null;
+		if(moved == PieceColor.White) { 
+    		//if king moved positive x, then moved king side
+    		if(dx - sx == 2) {
+    			tempSource = getButtonAt(7, 0);
+    			tempDest = getButtonAt(5, 0);
+    		}
+    		
+    		else if(sx - dx == 2) {
+    			tempSource = getButtonAt(0, 0);
+    			tempDest = getButtonAt(3, 0);
+    		}
+		}
+		
+		if(moved == PieceColor.Black) { 
+    		//if king moved positive x, then moved king side
+    		if(dx - sx == 2) {
+    			tempSource = getButtonAt(7, 7);
+    			tempDest = getButtonAt(5, 7);
+    		}
+    		
+    		else if(sx - dx == 2) {
+    			tempSource = getButtonAt(0, 7);
+    			tempDest = getButtonAt(3, 7);
+    		}
+		}
+		
+		//if we've populated tempSource and tempDest, then there is a castle
+		if(tempSource != null && tempDest != null) {
+			tempSource.setPiece(board.getPiece(tempSource.getMyX(), tempSource.getMyY()));
+			tempDest.setPiece(board.getPiece(tempDest.getMyX(), tempDest.getMyY()));
+			tempSource.repaint();
+			tempDest.repaint();
+		}
+	}
+	
 	//deactivate every square on the board
 	//this might be more efficient than getting legal moves and deactivating them
-	public void clearBoard() {
+	private void clearBoard() {
 		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 8; j++) {
 				getButtonAt(i, j).deactivate();

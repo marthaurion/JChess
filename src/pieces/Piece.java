@@ -38,7 +38,7 @@ public abstract class Piece {
     
     //takes the input list of squares and test whether each one will put the king in check
     //if so, the move is removed from the list
-    protected ArrayList<Square> checkKing(ArrayList<Square> input) {
+    public ArrayList<Square> checkKing(ArrayList<Square> input) {
     	Board copy = null;
     	Square temp;
     	Move m;
