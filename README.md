@@ -15,14 +15,15 @@ Things that are done:
 - Pawn will auto-promote to queen.
 - Stops the player from leaving the king in check.
 - Highlights possible moves in blue for the turn player.
+- Added some fancy Javadocs.
 
 Things to be done:
 - Need to keep testing castling and checkmate detection for bugs.
-- Need more testing on the code to stop the player from leaving king in check.
 - Add disambiguation for knights and rooks on the move list.
 - Add En Passant and better pawn promotion.
 - Add online aspect back.
 - Create an AI.
+- Make it an app.
 - Go through the code and make sure everything is well-documented.
 
 The images for the chess pieces were found [here](http://ixian.com/chess/) with permission from creator.

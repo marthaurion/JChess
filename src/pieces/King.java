@@ -7,13 +7,9 @@ import board.Move;
 
 
 public class King extends Piece {
-	private PieceColor color;
-	private Square location;
 	
 	public King(int x, int y, PieceColor c, Board b) {
-		color = c;
-		location = new Square(x, y);
-		board = b;
+		super(x, y, c, b);
 	}
 	
 	public Square getLocation() {
@@ -48,7 +44,7 @@ public class King extends Piece {
     // without adding to threat list
     public boolean move(Move m) {
 		//first do basic checks
-		if(!checkPiece(m, this)) return false;
+		if(!checkPiece(m)) return false;
 		
 		ArrayList<Square> list = getLegalMoves();
 		
@@ -90,7 +86,7 @@ public class King extends Piece {
 				i--;
 			}
 			//remove moves that land on squares with an ally
-			else if(!isEmpty(x, y) && !isEnemy(x, y, this)) {
+			else if(!isEmpty(x, y) && !isEnemy(x, y)) {
 				list.remove(i);
 				i--;
 			}
@@ -99,6 +95,11 @@ public class King extends Piece {
 		return list;
 	}
 	
+	/**
+	 * Add castling squares as valid move squares for the King.
+	 * @param list Input list to add the moves.
+	 * @return List with new moves added.
+	 */
 	public ArrayList<Square> addCastle(ArrayList<Square> list) {
 		if(color == PieceColor.White) return addWhiteCastle(list);
 		else if(color == PieceColor.Black) return addBlackCastle(list);

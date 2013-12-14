@@ -6,25 +6,13 @@ import board.Board;
 
 
 public class Pawn extends Piece {
-	private PieceColor color;
-	private Square location;
-	private int promo;
 	
 	public Pawn(int x, int y, PieceColor c, Board b) {
-		color = c;
-		location = new Square(x, y);
-		board = b;
-		if(c == PieceColor.White) promo = 7;
-		else if(c == PieceColor.Black) promo = 0;
-		else promo = -1;
+		super(x, y, c, b);
 	}
 	
 	public Square getLocation() {
 		return location;
-	}
-	
-	public int getPromo() {
-		return promo;
 	}
 	
 	public void setLocation(Square s) {
@@ -84,28 +72,48 @@ public class Pawn extends Piece {
 			list.add(new Square(myX, myY+a));
 		}
 		//checks the spaces in the corners
-		if(onBoard(myX+1, myY+a) && !isEmpty(myX+1, myY+a) && isEnemy(myX+1, myY+a, this)) {
+		if(onBoard(myX+1, myY+a) && !isEmpty(myX+1, myY+a) && isEnemy(myX+1, myY+a)) {
 			list.add(new Square(myX+1, myY+a));
 		}
-		if(onBoard(myX-1, myY+a) && !isEmpty(myX-1, myY+a) && isEnemy(myX-1, myY+a, this)) {
+		if(onBoard(myX-1, myY+a) && !isEmpty(myX-1, myY+a) && isEnemy(myX-1, myY+a)) {
 			list.add(new Square(myX-1, myY+a));
 		}
 		return list;
     }
     
     
-    //these two methods are specific only to the pawn
-    public int advance() {
+    //these methods are specifically for the pawn
+    
+    
+    /**
+     * Indicates which direction the pawn moves.
+     * @return Value of movement.
+     */
+    private int advance() {
     	if(color == PieceColor.White) {
     		return 1;
     	}
     	else return -1;
     }
     
-    public int start() {
+    /**
+     * The Pawn's starting square.
+     * @return The y-coordinate on the board which is the starting square for this Piece. 
+     */
+    private int start() {
     	if(color == PieceColor.White){
     		return 1;
     	}
     	else return 6;
     }
+    
+    /**
+     * Finds the promotion square of a pawn.
+     * @return The y-coordinate on the board which is the promotion square for this Piece.
+     */
+	public int getPromo() {
+		if(color == PieceColor.White) return 7;
+		else if(color == PieceColor.Black) return 0;
+		else return -1;
+	}
 }

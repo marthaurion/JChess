@@ -5,26 +5,51 @@ import pieces.PieceFactory;
 
 
 
-
+/**
+ * Abstraction for passing around each chess Move.
+ * There are multiple ways this can be used.
+ * The toString/fromString methods are available for passing the moves online.
+ * Also, can pass the moves between objects.
+ * @author marthaurion
+ *
+ */
 public class Move {
 	//this is the object that will be sent in a multiplayer form
 	private Piece source;
 	private Piece dest;
 	
+	/**
+	 * Create a new move from two input pieces.
+	 * @param s Input source piece.
+	 * @param d Input destination piece.
+	 */
 	public Move(Piece s, Piece d) {
 		source = s;
 		dest = d;
 	}
 	
 	//get methods
+	
+	/**
+	 * Get the source piece.
+	 * @return Piece object for the source of the move.
+	 */
 	public Piece getSource() {
 		return source;
 	}
 	
+	/**
+	 * Get the destination piece.
+	 * @return Piece object for the destination of the move.
+	 */
 	public Piece getDest() {
 		return dest;
 	}
 	
+	/**
+	 * Converts the move into algebraic notation.
+	 * @return Algebraic notation for this Move object.
+	 */
 	public String notation() {
 		StringBuilder st = new StringBuilder();
 		st.append(source.getID());
@@ -32,7 +57,11 @@ public class Move {
 		return st.toString();
 	}
 	
-	//for passing the message as a string
+	
+	/**
+	 * Returns a string with metadata about the Move object.
+	 * Useful for passing a message about the Move between computers.
+	 */
 	public String toString() {
 		StringBuilder st = new StringBuilder();
 		st.append(source.getName());
@@ -54,7 +83,12 @@ public class Move {
 		return st.toString();
 	}
 	
-	//takes a string-ified move and converts it into a Move object
+	/**
+	 * Takes a string-ified move and converts it into a Move object.
+	 * @param str String with the move metadata
+	 * @param board The Board object that the Move is being created for.
+	 * @return Move object for the input string.
+	 */
 	public static Move fromString(String str, Board board) {
 		String[] toks = str.split("\\|"); //each element should be a square location
 		String[] src = toks[1].split(","); //parse the source square

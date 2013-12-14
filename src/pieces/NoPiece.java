@@ -3,12 +3,8 @@ package pieces;
 import java.util.ArrayList;
 
 public class NoPiece extends Piece {
-	private PieceColor color;
-	private Square location;
-	
 	public NoPiece(int x, int y) {
-		color = PieceColor.None;
-		location = new Square(x, y);
+		super(x, y, PieceColor.None, null);
 	}
 	
 	public Square getLocation() {

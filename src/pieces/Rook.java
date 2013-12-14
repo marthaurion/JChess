@@ -6,13 +6,9 @@ import board.Board;
 
 
 public class Rook extends StraightLine {
-	private PieceColor color;
-	private Square location;
 	
 	public Rook(int x, int y, PieceColor c, Board b) {
-		color = c;
-		location = new Square(x, y);
-		board = b;
+		super(x, y, c, b);
 	}
 	
 	public Square getLocation() {
@@ -45,10 +41,8 @@ public class Rook extends StraightLine {
 
 	public ArrayList<Square> getLegalMoves() {
 		ArrayList<Square> list = new ArrayList<Square>();
-		int x = location.getX();
-		int y = location.getY();
 		
-		list = addStraight(list, x, y, this);
+		list = addStraight(list);
 		return list;
 	}
 	

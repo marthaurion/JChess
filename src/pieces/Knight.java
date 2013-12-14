@@ -6,13 +6,9 @@ import board.Board;
 
 
 public class Knight extends Piece {
-	private PieceColor color;
-	private Square location;
 	
 	public Knight(int x, int y, PieceColor c, Board b) {
-		color = c;
-		location = new Square(x, y);
-		board = b;
+		super(x, y, c, b);
 	}
 	
 	public Square getLocation() {
@@ -72,7 +68,7 @@ public class Knight extends Piece {
 				i--;
 			}
 			//covers the case where the target is occupied by an ally
-			else if(!isEmpty(x, y) && !isEnemy(x, y, this)) {
+			else if(!isEmpty(x, y) && !isEnemy(x, y)) {
 				list.remove(i);
 				i--;
 			}

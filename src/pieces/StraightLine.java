@@ -2,15 +2,34 @@ package pieces;
 
 import java.util.ArrayList;
 
+import board.Board;
 
+/**
+ * Abstraction for all pieces that move in a straight line (rook, queen, bishop).
+ * Their behaviors are fairly similar.
+ * @author marthaurion
+ *
+ */
 public abstract class StraightLine extends Piece {
+	
+	public StraightLine(int x, int y, PieceColor c, Board b) {
+		super(x, y, c, b);
+	}
 
-	//adds all diagonals on the board
-	protected ArrayList<Square> addDiagonal(ArrayList<Square> list, int x, int y, Piece p) {
+	/**
+	 * Adds all diagonals on the board for this piece to the input list.
+	 * This is for bishop movements.
+	 * @param list Input list to be edited with new moves.
+	 * @return Updated list with new moves.
+	 */
+	protected ArrayList<Square> addDiagonal(ArrayList<Square> list) {
 		boolean topright = true;
 		boolean botright = true;
 		boolean topleft = true;
 		boolean botleft = true;
+		
+		int x = getLocation().getX();
+		int y = getLocation().getY();
 		
 		
 		for(int i = 1; i < 8; i++) {
@@ -28,7 +47,7 @@ public abstract class StraightLine extends Piece {
 				else {	
 					topright = false;
 					//capture case 
-					if(isEnemy(x+i, y+i, p)) {
+					if(isEnemy(x+i, y+i)) {
 						list.add(new Square(x+i, y+i));
 					}
 				}
@@ -43,7 +62,7 @@ public abstract class StraightLine extends Piece {
 				}
 				else {
 					botright = false;
-					if(isEnemy(x+i, y-i, p)) {
+					if(isEnemy(x+i, y-i)) {
 						list.add(new Square(x+i, y-i));
 					}
 				}
@@ -58,7 +77,7 @@ public abstract class StraightLine extends Piece {
 				}
 				else {
 					topleft = false;
-					if(isEnemy(x-i, y+i, p)) {
+					if(isEnemy(x-i, y+i)) {
 						list.add(new Square(x-i, y+i));
 					}
 				}
@@ -73,7 +92,7 @@ public abstract class StraightLine extends Piece {
 				}
 				else {
 					botleft = false;
-					if(isEnemy(x-i, y-i, p)) {
+					if(isEnemy(x-i, y-i)) {
 						list.add(new Square(x-i, y-i));
 					}
 				}
@@ -82,13 +101,20 @@ public abstract class StraightLine extends Piece {
 		return list;
 	}
 	
-	protected ArrayList<Square> addStraight(ArrayList<Square> list, int x, int y, Piece p) {
+	/**
+	 * Adds all lines on the board for this piece to the input list.
+	 * This is for rook movements.
+	 * @param list Input list to be edited with new moves.
+	 * @return Updated list with new moves.
+	 */
+	protected ArrayList<Square> addStraight(ArrayList<Square> list) {
 		boolean top = true;
 		boolean right = true;
 		boolean left = true;
 		boolean bot = true;
 		
-		
+		int x = getLocation().getX();
+		int y = getLocation().getY();
 		
 		for(int i = 1; i < 8; i++) {
 			
@@ -99,7 +125,7 @@ public abstract class StraightLine extends Piece {
 				}
 				else if(!isEmpty(x, y+i)) {
 					top = false;
-					if(isEnemy(x, y+i, p)) {
+					if(isEnemy(x, y+i)) {
 						list.add(new Square(x, y+i));
 					}
 				}
@@ -112,7 +138,7 @@ public abstract class StraightLine extends Piece {
 				}
 				else if(!isEmpty(x, y-i)) {
 					bot = false;
-					if(isEnemy(x, y-i, p)) {
+					if(isEnemy(x, y-i)) {
 						list.add(new Square(x, y-i));
 					}
 				}
@@ -125,7 +151,7 @@ public abstract class StraightLine extends Piece {
 				}
 				else if(!isEmpty(x-i, y)) {
 					left = false;
-					if(isEnemy(x-i, y, p)) {
+					if(isEnemy(x-i, y)) {
 						list.add(new Square(x-i, y));
 					}
 				}
@@ -138,7 +164,7 @@ public abstract class StraightLine extends Piece {
 				}
 				else if(!isEmpty(x+i, y)) {
 					right = false;
-					if(isEnemy(x+i, y, p)) {
+					if(isEnemy(x+i, y)) {
 						list.add(new Square(x+i, y));
 					}
 				}

@@ -6,13 +6,8 @@ import board.Board;
 
 
 public class Queen extends StraightLine {
-	private PieceColor color;
-	private Square location;
-	
 	public Queen(int x, int y, PieceColor c, Board b) {
-		color = c;
-		location = new Square(x, y);
-		board = b;
+		super(x, y, c, b);
 	}
 	
 	public Square getLocation() {
@@ -45,11 +40,9 @@ public class Queen extends StraightLine {
     
 	public ArrayList<Square> getLegalMoves() {
 		ArrayList<Square> list = new ArrayList<Square>();
-		int x = location.getX();
-		int y = location.getY();
 		
-		list = addStraight(list, x, y, this);
-		list = addDiagonal(list, x, y, this);
+		list = addStraight(list);
+		list = addDiagonal(list);
 		return list;
 	}
     

@@ -20,7 +20,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-
+/**
+ * GUI for the chess board.
+ * @author marthaurion
+ *
+ */
 public class Display implements ActionListener {
 	private Board board;
 	private JFrame frame;
@@ -30,15 +34,24 @@ public class Display implements ActionListener {
 	private int sourceY;
 	private ChessButton sourceButton;
 	
-	public Display(Board b) {
-		board = b;
+	/**
+	 * Initialize the GUI with a new board.
+	 */
+	public Display() {
+		board = new Board();
 		sourceX = -1;
 		sourceY = -1;
 		sourceButton = null;
 		movelist = new JLabel();
-		b.newGame();
+		board.newGame();
 	}
 	
+	/**
+	 * Get a ChessButton on the board.
+	 * @param x The x-coordinate of the ChessButton.
+	 * @param y The y-coordinate of the ChessButton.
+	 * @return ChessButton at location (x, y).
+	 */
 	private ChessButton getButtonAt(int x, int y) {
 		Component[] comps = panel.getComponents();
 		ChessButton tempB;
@@ -49,6 +62,10 @@ public class Display implements ActionListener {
 		return null;
 	}
 	
+	/**
+	 * Ends the game and disposes the GUI.
+	 * @param c PieceColor indicating which player won.
+	 */
 	private void endGame(PieceColor c) {
 		displayMoves();
 		if(c == PieceColor.None) {
@@ -59,8 +76,10 @@ public class Display implements ActionListener {
 		}
 		frame.dispose();
 	}
-
-
+	
+	/**
+	 * Creates the GUI and displays it to the user.
+	 */
 	public void initialize(){
 		//initialize the frame
 		frame = new JFrame();
@@ -80,6 +99,10 @@ public class Display implements ActionListener {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Creates a JPanel for the chess board.
+	 * @return JPanel that displays the chess board.
+	 */
 	private JPanel displayBoard() {
 		JPanel p = new JPanel();
 		p.setLayout(new GridLayout(8, 8));
@@ -97,7 +120,9 @@ public class Display implements ActionListener {
 		return p;
 	}
 	
-	//sets the text of the movelist label with the appropriate moves
+	/**
+	 * Display move list on the Display.
+	 */
 	private void displayMoves() {
 		ArrayList<String> moves = board.getMoves();
 		if(moves.size() == 0) movelist.setText("Moves");
@@ -218,8 +243,9 @@ public class Display implements ActionListener {
 	}
 	
 	
-	//goes through and highlights all possible move squares
-	//for the source button if it is filled
+	/**
+	 * Highlights all possible move squares for the clicked piece.
+	 */
 	private void highlightPossible() {
 		if(sourceButton == null) return;
 		
@@ -243,7 +269,12 @@ public class Display implements ActionListener {
 		}
 	}
 	
-	//checks for a castling move
+	/**
+	 * Checks for a castling move.
+	 * @param sx The x-coordinate of the source square of a move.
+	 * @param dx The x-coordinate of the destination square of a move.
+	 * @param moved PieceColor of the piece being moved.
+	 */
 	private void processCastle(int sx, int dx, PieceColor moved) {
 		ChessButton tempSource = null;
 		ChessButton tempDest = null;
@@ -282,8 +313,10 @@ public class Display implements ActionListener {
 		}
 	}
 	
-	//deactivate every square on the board
-	//this might be more efficient than getting legal moves and deactivating them
+	/**
+	 * Remove borders on every square on the board.
+	 * This might be more efficient than getting legal moves and deactivating them.
+	 */
 	private void clearBoard() {
 		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 8; j++) {
