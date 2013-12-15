@@ -16,7 +16,6 @@ import pieces.Square;
 /**
  * Abstraction for the chess board.
  * @author marthaurion
- *
  */
 public class Board {
 	
@@ -26,7 +25,7 @@ public class Board {
     private Square wKing;
     private Square bKing;
     
-    private boolean[] castle; //use an array to factor in kingside/queenside
+    private boolean[] castle; //use an array to factor in king/queen side
     
     private ArrayList<String> moveList;
     
@@ -507,12 +506,23 @@ public class Board {
     	
     	
     	temp.setLocation(new Square(dx, dy));
+    	
+    	//check for en passant
+    	if(name_moved.equals("Pawn")) {
+    		int loc = ((Pawn)temp).advance();
+    		((Pawn)temp).setMoved(moveList.size());
+    		
+    		//only a valid en passant move if the pawn moves diagonally
+    		//and the destination square is empty
+    		if(sx != dx && getPiece(dx, dy).getName().equals("None")) {
+    			setPiece(dx, dy-loc, new NoPiece(dx, dy-loc));
+    		}
+    	}
+    	
     	setPiece(dx, dy, temp);
     	
     	if(turn == PieceColor.White) turn = PieceColor.Black;
     	else turn = PieceColor.White;
-    	
-    	
     	
     	//check if the move was a castle
     	if(name_moved.equals("King")) {
@@ -582,6 +592,17 @@ public class Board {
     	//now do normal checks for moves
     	//if no piece, normal notation
     	if(m.getDest().getName().equals("None")) {
+    		
+    		//check for en passant
+    		if(m.getSource().getName().equals("Pawn")) {
+    			
+    			//it's only en passant if the pawn moves diagonally to an empty square 
+    			if(m.getSource().getLocation().getX() != m.getDest().getLocation().getX()) {
+    				moveList.add(m.getSource().getLocation().getFile()+ "x" + m.getDest().getLocation().getNotation());
+    				return;
+    			}
+    		}
+    		
     		moveList.add(m.getSource().getID() + m.getDest().getLocation().getNotation());
     	}
     	//add "x" for capturing

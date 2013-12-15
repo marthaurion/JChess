@@ -10,7 +10,7 @@ Things that are done:
 - Created attack maps for checking threatened squares.
 - Move list displays each move that has been played.
 - Chess pieces are images.
-- Added a slightly improved form of castling.
+- Added castling and en passant as valid moves.
 - Added a form of checkmate detection.
 - Pawn will auto-promote to queen.
 - Stops the player from leaving the king in check.
@@ -18,9 +18,9 @@ Things that are done:
 - Added some fancy Javadocs.
 
 Things to be done:
-- Need to keep testing castling and checkmate detection for bugs.
+- Need to keep testing castling, en passant, and checkmate detection for bugs.
 - Add disambiguation for knights and rooks on the move list.
-- Add En Passant and better pawn promotion.
+- Add better pawn promotion.
 - Add online aspect back.
 - Create an AI.
 - Make it an app.

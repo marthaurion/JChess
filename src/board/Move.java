@@ -17,6 +17,8 @@ public class Move {
 	//this is the object that will be sent in a multiplayer form
 	private Piece source;
 	private Piece dest;
+	private boolean castle;
+	private boolean enPass;
 	
 	/**
 	 * Create a new move from two input pieces.
@@ -26,6 +28,8 @@ public class Move {
 	public Move(Piece s, Piece d) {
 		source = s;
 		dest = d;
+		castle = false;
+		enPass = false;
 	}
 	
 	//get methods
@@ -44,6 +48,22 @@ public class Move {
 	 */
 	public Piece getDest() {
 		return dest;
+	}
+	
+	public boolean isCastle() {
+		return castle;
+	}
+	
+	public boolean isEnPassant() {
+		return enPass;
+	}
+	
+	public void setCastle() {
+		castle = true;
+	}
+	
+	public void setEnPassant() {
+		enPass = true;
 	}
 	
 	/**

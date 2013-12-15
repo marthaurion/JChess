@@ -6,9 +6,11 @@ import board.Board;
 
 
 public class Pawn extends Piece {
+	private int moved;
 	
 	public Pawn(int x, int y, PieceColor c, Board b) {
 		super(x, y, c, b);
+		moved = 0;
 	}
 	
 	public Square getLocation() {
@@ -17,6 +19,7 @@ public class Pawn extends Piece {
 	
 	public void setLocation(Square s) {
 		location = s;
+		moved++;
 	}
 	
 	public String getNotation() {
@@ -41,7 +44,10 @@ public class Pawn extends Piece {
     }
     
     @Override
-    //the pawns threat squares aren't actually legal moves
+    /**
+     * The pawn's threat squares aren't the same as legal moves.
+     * The threat list needs to remove the forward move squares.
+     */
     public ArrayList<Square> getThreatList() {
     	ArrayList<Square> list = new ArrayList<Square>();
     	
@@ -57,7 +63,6 @@ public class Pawn extends Piece {
     
     public ArrayList<Square> getLegalMoves() {
 		//generate legal moves
-		//ignoring en passant for now
 		ArrayList<Square> list = new ArrayList<Square>();
 		int myX = location.getX();
 		int myY = location.getY();
@@ -71,6 +76,7 @@ public class Pawn extends Piece {
 		if(isEmpty(myX, myY+a)) {
 			list.add(new Square(myX, myY+a));
 		}
+		
 		//checks the spaces in the corners
 		if(onBoard(myX+1, myY+a) && !isEmpty(myX+1, myY+a) && isEnemy(myX+1, myY+a)) {
 			list.add(new Square(myX+1, myY+a));
@@ -78,6 +84,17 @@ public class Pawn extends Piece {
 		if(onBoard(myX-1, myY+a) && !isEmpty(myX-1, myY+a) && isEnemy(myX-1, myY+a)) {
 			list.add(new Square(myX-1, myY+a));
 		}
+		
+		//en passant detection
+		if(myY == getEnPassant()) {
+			if(onBoard(myX+1, myY+a) && isEmpty(myX+1, myY+a) && enPassantTarget(myX+1, myY)) {
+				list.add(new Square(myX+1, myY+a));
+			}
+			if(onBoard(myX-1, myY+a) && isEmpty(myX-1, myY+a) && enPassantTarget(myX-1, myY)) {
+				list.add(new Square(myX-1, myY+a));
+			}
+		}
+		
 		return list;
     }
     
@@ -89,7 +106,7 @@ public class Pawn extends Piece {
      * Indicates which direction the pawn moves.
      * @return Value of movement.
      */
-    private int advance() {
+    public int advance() {
     	if(color == PieceColor.White) {
     		return 1;
     	}
@@ -115,5 +132,33 @@ public class Pawn extends Piece {
 		if(color == PieceColor.White) return 7;
 		else if(color == PieceColor.Black) return 0;
 		else return -1;
+	}
+	
+	/**
+	 * Returns the en passant threat square for this pawn.
+	 * @return The y-coordinate on the board which is the threat square for en passant.
+	 */
+	private int getEnPassant() {
+		if(color == PieceColor.White) return 4;
+		else if(color == PieceColor.Black) return 3;
+		else return -1;
+	}
+	
+	private boolean enPassantTarget(int x, int y) {
+		boolean enemy = isEnemy(x, y);
+		if(board.getPiece(x, y).getName().equals("Pawn") && enemy) {
+			return getMoved() < ((Pawn)board.getPiece(x, y)).getMoved();
+		}
+		else return false;
+	}
+	
+	
+	
+	public void setMoved(int x) {
+		moved = x;
+	}
+	
+	public int getMoved() {
+		return moved;
 	}
 }

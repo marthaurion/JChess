@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import pieces.King;
 import pieces.NoPiece;
+import pieces.Pawn;
 import pieces.Piece;
 import pieces.PieceColor;
 import pieces.Square;
@@ -193,6 +194,8 @@ public class Display implements ActionListener {
 				
 				//make the move if legal
 				if(flag) {
+					boolean enPass = false;
+					
 					
 					//win condition
 					if(dest.getName().equals("King")) {
@@ -201,10 +204,13 @@ public class Display implements ActionListener {
 						return;
 					}
 					
-					board.makeMove(m);
+					//set the flag for en passant if a pawn is moved diagonally
+					//and to an empty square
+					if(src.getName().equals("Pawn")) {
+						enPass = (sx != dx) && board.getPiece(dx, dy).getName().equals("None");
+					}
 					
-					//check for castling
-					//I know this is inefficient. This is just a base version to get it working.
+					board.makeMove(m);
 					
 			    	//check if the move was a castle
 			    	if(name_moved.equals("King")) processCastle(sx, dx, moved);
@@ -212,6 +218,14 @@ public class Display implements ActionListener {
 			    	//update the panel with the move
 					sourceButton.setPiece(new NoPiece(x,y)); //empty old square
 					source.setPiece(board.getPiece(dx, dy)); //set destination square to be source piece
+					
+					//if en passant was made, empty the captured piece's square
+					if(enPass) {
+						Pawn temp = (Pawn)(board.getPiece(dx, dy));
+						ChessButton tempButton = getButtonAt(dx, dy-temp.advance());
+						tempButton.setPiece(new NoPiece(dx, dy-temp.advance()));
+						tempButton.repaint();
+					}
 					
 					clearBoard();
 					
