@@ -276,9 +276,18 @@ public class Display implements ActionListener {
 			
 			//loop through all possible moves and activate their buttons
 			Square sq;
+			Piece temp2;
 			for(int i = 0; i < moves.size(); i++) {
 				sq = moves.get(i);
-				getButtonAt(sq.getX(), sq.getY()).activatePossible();
+				
+				//use a different color if enemy piece
+				temp2 = board.getPiece(sq.getX(), sq.getY());
+				if(!temp2.getName().equals("None") && temp2.getColor() != temp.getColor()) {
+					getButtonAt(sq.getX(), sq.getY()).activateEnemy();
+				}
+				
+				//use blue if empty square
+				else getButtonAt(sq.getX(), sq.getY()).activatePossible();
 			}
 		}
 	}

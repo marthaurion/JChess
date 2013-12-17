@@ -84,6 +84,15 @@ public class ChessButton extends JButton {
 	}
 	
 	/**
+	 * Changes the button to have a yellow border.
+	 */
+	public void activateEnemy() {
+		setBorder(new LineBorder(Color.YELLOW, 5));
+		setBorderPainted(true);
+		repaint();
+	}
+	
+	/**
 	 * Removes the border on the button.
 	 */
 	public void deactivate() {
