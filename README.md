@@ -25,5 +25,6 @@ Things to be done:
 - Create an AI.
 - Make it an app.
 - Go through the code and make sure everything is well-documented.
+- Might want to change the attack map to be its own class instead of a 2D array of ints.
 
 The images for the chess pieces were found [here](http://ixian.com/chess/) with permission from creator.
