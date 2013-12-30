@@ -16,6 +16,7 @@ Things that are done:
 - Stops the player from leaving the king in check.
 - Highlights possible moves in blue for the turn player.
 - Added some fancy Javadocs.
+- Created a more simple display class that does less board logic (needs testing).
 
 Things to be done:
 - Need to keep testing castling, en passant, and checkmate detection for bugs.
