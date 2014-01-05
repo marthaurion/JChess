@@ -13,7 +13,7 @@ import board.Move;
  * @author marthaurion
  *
  */
-public class Controller implements ActionListener {
+public class Player implements ActionListener {
 	private BasicDisplay display;
 	private Board board;
 	private int sourceX;
@@ -24,7 +24,7 @@ public class Controller implements ActionListener {
 	 * @param d BasicDisplay object that will act as the view for the controller.
 	 * @param b Board object that will act as a model for the controller.
 	 */
-	public Controller(BasicDisplay d, Board b) {
+	public Player(BasicDisplay d, Board b) {
 		display = d;
 		board = b;
 		sourceX = -1;
