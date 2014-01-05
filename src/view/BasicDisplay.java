@@ -28,13 +28,17 @@ public class BasicDisplay {
 	private JFrame frame;
 	private JPanel panel;
 	private JLabel movelist;
-	private Controller control;
+	private Player player;
 	
+	/**
+	 * Constructor for BasicDisplay takes in model as input and initializes a game
+	 * @param b Board object representing the model for the display.
+	 */
 	public BasicDisplay(Board b) {
 		board = b;
 		movelist = new JLabel();
 		board.newGame();
-		control = new Controller(this, b);
+		player = new Player(this, b);
 	}
 	
 	/**
@@ -104,7 +108,7 @@ public class BasicDisplay {
 				ChessButton grid = new ChessButton(j, i);
 				
 				grid.setPiece(board.getPiece(j, i));
-				grid.addActionListener(control);
+				grid.addActionListener(player);
 				panel.add(grid);
 			}
 		}

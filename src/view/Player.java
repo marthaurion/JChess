@@ -13,8 +13,9 @@ import board.Move;
  * @author marthaurion
  *
  */
-public class Controller implements ActionListener {
+public class Player implements ActionListener {
 	private BasicDisplay display;
+	private PieceColor color;
 	private Board board;
 	private int sourceX;
 	private int sourceY;
@@ -24,9 +25,10 @@ public class Controller implements ActionListener {
 	 * @param d BasicDisplay object that will act as the view for the controller.
 	 * @param b Board object that will act as a model for the controller.
 	 */
-	public Controller(BasicDisplay d, Board b) {
+	public Player(BasicDisplay d, Board b) {
 		display = d;
 		board = b;
+		color = null; //request this from the server
 		sourceX = -1;
 		sourceY = -1;
 	}
@@ -66,7 +68,7 @@ public class Controller implements ActionListener {
 				sourceX = -1;
 				sourceY = -1;
 				
-				//make the move if legal
+				//make the move if legal and the color of the piece matches the player
 				if(flag) {
 					board.makeMove(m);
 					
@@ -84,7 +86,6 @@ public class Controller implements ActionListener {
 					else if(temp == 0) display.endGame(PieceColor.None);
 				}
 				//endif flag
-				
 				else {
 					System.out.println("Invalid move"); //for debug
 					display.clearBoard();
