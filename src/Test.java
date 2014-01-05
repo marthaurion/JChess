@@ -1,11 +1,11 @@
+import board.Board;
 import view.BasicDisplay;
-//import view.Display;
+
 
 
 public class Test {
 	public static void main(String[] args) {
-		//Display disp = new Display();
-		BasicDisplay disp = new BasicDisplay();
+		BasicDisplay disp = new BasicDisplay(new Board());
 		disp.initialize();
 	}
 }

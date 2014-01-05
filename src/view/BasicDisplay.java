@@ -4,8 +4,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -18,7 +16,6 @@ import pieces.Piece;
 import pieces.PieceColor;
 import pieces.Square;
 import board.Board;
-import board.Move;
 
 /**
  * GUI for the chess board. This one is different in that it does no fancy checking.
@@ -26,29 +23,25 @@ import board.Move;
  * @author marthaurion
  *
  */
-public class BasicDisplay implements ActionListener {
+public class BasicDisplay {
 	private Board board;
 	private JFrame frame;
 	private JPanel panel;
 	private JLabel movelist;
-	private int sourceX;
-	private int sourceY;
-	private ChessButton sourceButton;
+	private Controller control;
 	
-	public BasicDisplay() {
-		board = new Board();
-		sourceX = -1;
-		sourceY = -1;
-		sourceButton = null;
+	public BasicDisplay(Board b) {
+		board = b;
 		movelist = new JLabel();
 		board.newGame();
+		control = new Controller(this, b);
 	}
 	
 	/**
 	 * Ends the game and disposes the GUI.
 	 * @param c PieceColor indicating which player won.
 	 */
-	private void endGame(PieceColor c) {
+	public void endGame(PieceColor c) {
 		displayMoves();
 		if(c == PieceColor.None) {
 			JOptionPane.showMessageDialog(frame, "Game Over. It's a tie!");
@@ -65,7 +58,7 @@ public class BasicDisplay implements ActionListener {
 	 * @param y The y-coordinate of the ChessButton.
 	 * @return ChessButton at location (x, y).
 	 */
-	private ChessButton getButtonAt(int x, int y) {
+	public ChessButton getButtonAt(int x, int y) {
 		Component[] comps = panel.getComponents();
 		ChessButton tempB;
 		for(int i = 0; i < comps.length; i++) {
@@ -101,7 +94,7 @@ public class BasicDisplay implements ActionListener {
 	/**
 	 * Creates a JPanel for the chess board.
 	 */
-	private void displayBoard() {
+	public void displayBoard() {
 		if(panel == null) panel = new JPanel();
 		panel.setLayout(new GridLayout(8, 8));
 		panel.setPreferredSize(new Dimension(600, 600));
@@ -111,7 +104,7 @@ public class BasicDisplay implements ActionListener {
 				ChessButton grid = new ChessButton(j, i);
 				
 				grid.setPiece(board.getPiece(j, i));
-				grid.addActionListener(this);
+				grid.addActionListener(control);
 				panel.add(grid);
 			}
 		}
@@ -122,7 +115,7 @@ public class BasicDisplay implements ActionListener {
 	/**
 	 * Display move list on the Display.
 	 */
-	private void displayMoves() {
+	public void displayMoves() {
 		ArrayList<String> moves = board.getMoves();
 		if(moves.size() == 0) movelist.setText("Moves");
 		else {
@@ -145,80 +138,15 @@ public class BasicDisplay implements ActionListener {
 		}
 	}
 	
-	public void actionPerformed(ActionEvent e) {
-		ChessButton source = (ChessButton)e.getSource();
-		
-		//if there is no source, set this to be the source
-		if(sourceButton == null) {
-			sourceX = source.getMyX();
-			sourceY = source.getMyY();
-			sourceButton = source;
-			sourceButton.activate();
-			
-			highlightPossible();
-		}
-		//otherwise create the move and send to the model
-		else {
-			sourceButton = null;
-			int x = source.getMyX();
-			int y = source.getMyY();
-			
-			//if the same button is clicked, cancel the selection
-			if(sourceX == x && sourceY == y) {
-				sourceX = -1;
-				sourceY = -1;
-				clearBoard();
-			}
-			
-			//otherwise try the move and make if it is legal
-			else {
-				Piece src = board.getPiece(sourceX, sourceY);
-				Piece dest = board.getPiece(x, y);
-				Move m = new Move(src, dest);
-		    	
-				boolean flag = board.tryMove(m);
-				//reset now that the move has been registered
-				sourceX = -1;
-				sourceY = -1;
-				
-				//make the move if legal
-				if(flag) {
-					board.makeMove(m);
-					
-					//after making the move, check if the king is checkmated
-					int temp = board.gameState();
-					
-					//first update movelist
-					displayMoves();
-					
-					displayBoard();
-					
-					//then check for endgame conditions
-					if(temp == 1) endGame(PieceColor.White);
-					else if(temp == -1) endGame(PieceColor.Black);
-					else if(temp == 0) endGame(PieceColor.None);
-				}
-				//endif flag
-				
-				else {
-					System.out.println("Invalid move"); //for debug
-					clearBoard();
-				}
-			}
-			//endelse
-		}
-		//endelse
-	}
-	
 	
 	/**
-	 * Highlights all possible move squares for the clicked piece.
+	 * Highlights all possible move squares for the input piece.
+	 * @param x The x-coordinate of the input piece.
+	 * @param y The y-coordinate of the input piece.
 	 */
-	private void highlightPossible() {
-		if(sourceButton == null) return;
-		
+	public void highlightPossible(int x, int y) {
 		//highlight all possible moves
-		Piece temp = board.getPiece(sourceButton.getMyX(), sourceButton.getMyY());
+		Piece temp = board.getPiece(x, y);
 		
 		//only highlight if it's the turn color
 		if(temp.getColor() == board.getTurn()) {
@@ -250,7 +178,7 @@ public class BasicDisplay implements ActionListener {
 	 * Remove borders on every square on the board.
 	 * This might be more efficient than getting legal moves and deactivating them.
 	 */
-	private void clearBoard() {
+	public void clearBoard() {
 		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 8; j++) {
 				getButtonAt(i, j).deactivate();
