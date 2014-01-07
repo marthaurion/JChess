@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import controller.Player;
 import pieces.King;
 import pieces.Piece;
 import pieces.PieceColor;

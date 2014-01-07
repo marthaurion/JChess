@@ -1,10 +1,13 @@
-package view;
+package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import online.PlayerProxy;
 import pieces.Piece;
 import pieces.PieceColor;
+import view.BasicDisplay;
+import view.ChessButton;
 import board.Board;
 import board.Move;
 
@@ -19,6 +22,7 @@ public class Player implements ActionListener {
 	private Board board;
 	private int sourceX;
 	private int sourceY;
+	private PlayerProxy proxy;
 	
 	/**
 	 * Constructor links the controller to a view and a model.
@@ -28,9 +32,19 @@ public class Player implements ActionListener {
 	public Player(BasicDisplay d, Board b) {
 		display = d;
 		board = b;
-		color = null; //request this from the server
 		sourceX = -1;
 		sourceY = -1;
+		proxy = new PlayerProxy(this);
+		color = proxy.startGame();
+	}
+	
+	//this method probably isn't needed
+	public PieceColor getColor() {
+		return color;
+	}
+	
+	public Board getBoard() {
+		return board;
 	}
 	
 	@Override

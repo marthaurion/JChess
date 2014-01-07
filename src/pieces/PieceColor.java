@@ -20,9 +20,10 @@ public enum PieceColor {
 		else if(s.equals("White")) {
 			return PieceColor.White;
 		}
-		else {
+		else if(s.equals("Black")) {
 			return PieceColor.Black;
 		}
+		else return null;
 	}
 	
 	/**
