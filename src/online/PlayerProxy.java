@@ -29,7 +29,7 @@ public class PlayerProxy {
 		String color = null;
 		
 		try {
-			socket = new Socket("68.51.78.38", 8484);
+			socket = new Socket("localhost", 8484);
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(socket.getOutputStream(), true);
 			System.out.println("Reading Color");
