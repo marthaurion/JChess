@@ -53,7 +53,7 @@ public class PlayerProxy {
 		output.println(p.toString());
 	}
 	
-	public void endGame(PieceColor c) throws IOException {
+	public void endGame() throws IOException {
 		socket.close();
 		input.close();
 		output.close();

@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import online.PlayerProxy;
 import pieces.Piece;
@@ -36,6 +37,13 @@ public class Player implements ActionListener {
 		sourceY = -1;
 		proxy = new PlayerProxy(this);
 		color = proxy.startGame();
+	}
+	
+	public void endGame(int state) throws IOException {
+		proxy.endGame(); //close connections
+		if(state == 1) display.endGame(PieceColor.White);
+		else if(state == -1) display.endGame(PieceColor.Black);
+		else if(state == 0) display.endGame(PieceColor.None);
 	}
 	
 	//this method probably isn't needed
@@ -84,20 +92,34 @@ public class Player implements ActionListener {
 				
 				//make the move if legal and the color of the piece matches the player
 				if(flag) {
-					board.makeMove(m);
-					
-					//after making the move, check if the king is checkmated
-					int temp = board.gameState();
-					
-					//first update movelist
-					display.displayMoves();
-					
-					display.displayBoard();
-					
-					//then check for endgame conditions
-					if(temp == 1) display.endGame(PieceColor.White);
-					else if(temp == -1) display.endGame(PieceColor.Black);
-					else if(temp == 0) display.endGame(PieceColor.None);
+					try {
+						board.makeMove(m);
+						
+						//after making the move, check if the king is checkmated
+						int temp = board.gameState();
+						
+						//update display
+						display.displayMoves();
+						display.displayBoard();
+						
+						//send messages to other player
+						proxy.sendMessage(m);
+						
+						//then check for endgame conditions
+						if(temp != 2) endGame(temp);
+						
+						//get the other player's move and make it
+						m = proxy.getMove();
+						board.makeMove(m);
+						temp = board.gameState();
+						
+						//update display
+						display.displayMoves();
+						display.displayBoard();
+						
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 				//endif flag
 				else {

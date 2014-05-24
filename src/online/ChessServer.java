@@ -1,27 +1,25 @@
 package online;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
-
 import pieces.PieceColor;
 
 public class ChessServer {
+	private ServerPlayer currentPlayer;
+	
     //Runs the application. Pairs up clients that connect.
-    public static void main(String[] args) throws Exception {
+    public ChessServer() throws IOException {
         ServerSocket listener = new ServerSocket(8484);
         System.out.println("Server is running");
         try {
             while (true) {
-                Game game = new Game();
-                Game.Player playerX = game.new Player(listener.accept(), PieceColor.White);
-                Game.Player playerO = game.new Player(listener.accept(), PieceColor.Black);
+            	//the server constantly accepts connections and pairs up two connections into a game
+                ServerPlayer playerX = new ServerPlayer(this, listener.accept(), PieceColor.White);
+                ServerPlayer playerO = new ServerPlayer(this, listener.accept(), PieceColor.Black);
                 playerX.setOpponent(playerO);
                 playerO.setOpponent(playerX);
-                game.currentPlayer = playerX;
+                //set first player to be white and start the game
+                currentPlayer = playerX;
                 playerX.start();
                 playerO.start();
             }
@@ -29,70 +27,12 @@ public class ChessServer {
             listener.close();
         }
     }
-}
-
-//A two-player game.
-class Game {
-
-    //The current player.
-    Player currentPlayer;
-
-    public synchronized void sendMove(String s, Player player) {
+    
+    public synchronized void sendMove(String s, ServerPlayer player) {
         if (player == currentPlayer) {
-            currentPlayer = currentPlayer.opponent;
-            System.out.println(currentPlayer.color.toString());
+            currentPlayer = currentPlayer.getOpponent();
+            System.out.println(currentPlayer.getColor().toString());
             currentPlayer.otherPlayerMoved(s);
-        }
-    }
-
-    class Player extends Thread {
-        Player opponent;
-        Socket socket;
-        BufferedReader input;
-        PieceColor color;
-        PrintWriter output;
-
-        public Player(Socket socket, PieceColor color) {
-            this.socket = socket;
-            this.color = color;
-            try {
-                input = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
-                output = new PrintWriter(socket.getOutputStream(), true);
-                output.println(color.toString());
-            } catch (IOException e) {
-                System.out.println("Player died: " + e);
-            }
-        }
-
-        //Accepts notification of who the opponent is.
-        public void setOpponent(Player opponent) {
-            this.opponent = opponent;
-        }
-
-        public void otherPlayerMoved(String location) {
-            output.println(location);
-            System.out.println("Move sent.");
-        }
-
-        public void run() {
-            try {
-                // Repeatedly get commands from the client and process them.
-                while (true) {
-                    String command = input.readLine();
-                    System.out.println(command);
-                    if (!command.contains("Resign") && command.contains(color.toString())) {
-                        sendMove(command, this);
-                    } else {
-                    	sendMove(command, this);
-                        return;
-                    }
-                }
-            } catch (IOException e) {
-                System.out.println("Player died: " + e);
-            } finally {
-                try {socket.close();} catch (IOException e) {}
-            }
         }
     }
 }
