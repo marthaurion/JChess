@@ -29,14 +29,24 @@ public class Player implements ActionListener {
 	 * Constructor links the controller to a view and a model.
 	 * @param d BasicDisplay object that will act as the view for the controller.
 	 * @param b Board object that will act as a model for the controller.
+	 * @throws IOException 
 	 */
-	public Player(BasicDisplay d, Board b) {
-		display = d;
-		board = b;
+	public Player() throws IOException {
+		board = new Board();
 		sourceX = -1;
 		sourceY = -1;
 		proxy = new PlayerProxy(this);
-		color = proxy.startGame();
+		color = proxy.startGame(); //initialize the proxy
+		System.out.println(color.toString());
+		display = new BasicDisplay(board, this);
+		display.initialize(color == PieceColor.Black);
+		if(color == PieceColor.Black) {
+			Move m = proxy.getMove();
+			
+			board.makeMove(m);
+			
+			display.initialize(false);
+		}
 	}
 	
 	public void endGame(int state) throws IOException {
@@ -93,6 +103,10 @@ public class Player implements ActionListener {
 				//make the move if legal and the color of the piece matches the player
 				if(flag) {
 					try {
+						//send the move to the player first because making the move changes the move data
+						proxy.sendMessage(m);
+						
+						//make the move
 						board.makeMove(m);
 						
 						//after making the move, check if the king is checkmated
@@ -101,9 +115,6 @@ public class Player implements ActionListener {
 						//update display
 						display.displayMoves();
 						display.displayBoard();
-						
-						//send messages to other player
-						proxy.sendMessage(m);
 						
 						//then check for endgame conditions
 						if(temp != 2) endGame(temp);

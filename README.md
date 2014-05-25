@@ -18,6 +18,10 @@ Things that are done:
 - Added some fancy Javadocs.
 - Created a more simple display class that does less board logic (needs testing).
 
+Known Issues:
+- Frame is disposed for black when white makes its first move. This is disruptive, as the window closes, then re-opens.
+- Certain moves cause errors to occur. This needs to be tested more extensively.
+
 Things to be done:
 - Need to keep testing castling, en passant, and checkmate detection for bugs.
 - Add disambiguation for knights and rooks on the move list.

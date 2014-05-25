@@ -1,9 +1,9 @@
-import board.Board;
-import view.BasicDisplay;
+import java.io.IOException;
+import controller.Player;
 
 public class ChessDriver {
-	public static void main(String[] args) {
-		BasicDisplay disp = new BasicDisplay(new Board());
-		disp.initialize();
+	public static void main(String[] args) throws IOException {
+		@SuppressWarnings("unused")
+		Player play = new Player();
 	}
 }

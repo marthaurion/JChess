@@ -34,7 +34,6 @@ public class PlayerProxy {
 			output = new PrintWriter(socket.getOutputStream(), true);
 			System.out.println("Reading Color");
 			color = input.readLine();
-			System.out.println(color);
 		}
 		catch(IOException e) {
 			e.printStackTrace();
@@ -50,6 +49,7 @@ public class PlayerProxy {
 	}
 	
 	public void sendMessage(Move p) throws IOException {
+		System.out.println("Sent move: " + p.toString());
 		output.println(p.toString());
 	}
 	

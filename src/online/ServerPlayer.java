@@ -23,6 +23,7 @@ public class ServerPlayer extends Thread {
 		try {
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(socket.getOutputStream(), true);
+			System.out.println(color.toString());
 			output.println(color.toString());
 		} catch (IOException e) {
 			System.out.println("Player died: " + e);
