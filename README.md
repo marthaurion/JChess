@@ -26,10 +26,9 @@ Things to be done:
 - Need to keep testing castling, en passant, and checkmate detection for bugs.
 - Add disambiguation for knights and rooks on the move list.
 - Add better pawn promotion.
-- Add online aspect back.
 - Create an AI.
 - Make it an app.
-- Go through the code and make sure everything is well-documented.
+- Go through the code and make sure everything is well-documented. Keep Javadocs updated.
 - Might want to change the attack map to be its own class instead of a 2D array of ints.
 
 The images for the chess pieces were found [here](http://ixian.com/chess/) with permission from creator.
