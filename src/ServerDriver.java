@@ -1,11 +1,9 @@
 import java.io.IOException;
+import online.ChessServer;
 
-import controller.Player;
-
-public class ChessDriver {
+public class ServerDriver {
 	public static void main(String[] args) throws IOException {
 		@SuppressWarnings("unused")
-		//Player play = new Player(true);
-		Player play = new Player(false);
+		ChessServer server = new ChessServer();
 	}
 }

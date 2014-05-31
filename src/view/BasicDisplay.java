@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import controller.Player;
 import pieces.King;
 import pieces.Piece;
 import pieces.PieceColor;
@@ -31,14 +32,14 @@ public class BasicDisplay {
 	private Player player;
 	
 	/**
-	 * Constructor for display takes model as input and initializes game.
-	 * @param b Board object that represents model for this display. 
+	 * Constructor for BasicDisplay takes in model as input and initializes a game
+	 * @param b Board object representing the model for the display.
 	 */
-	public BasicDisplay(Board b) {
+	public BasicDisplay(Board b, Player p) {
 		board = b;
 		movelist = new JLabel();
 		board.newGame();
-		player = new Player(this, b);
+		player = p;
 	}
 	
 	/**
@@ -75,14 +76,16 @@ public class BasicDisplay {
 	/**
 	 * Creates the GUI and displays it to the user.
 	 */
-	public void initialize(){
+	public void initialize(boolean black) {
+		if(frame != null) frame.dispose();
 		//initialize the frame
 		frame = new JFrame();
 		frame.setPreferredSize(new Dimension(1000, 1000));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new FlowLayout());
 		
-		displayBoard();
+		if(black) displayBlackBoard();
+		else displayBoard();
 		JPanel p2 = new JPanel();
 		p2.setLayout(new FlowLayout());
 		p2.setPreferredSize(new Dimension(200, 600));
@@ -109,6 +112,25 @@ public class BasicDisplay {
 				
 				grid.setPiece(board.getPiece(j, i));
 				grid.addActionListener(player);
+				panel.add(grid);
+			}
+		}
+		panel.repaint();
+	}
+	
+	/**
+	 * Creates a JPanel for the chess board that isn't actionable yet.
+	 */
+	public void displayBlackBoard() {
+		if(panel == null) panel = new JPanel();
+		panel.setLayout(new GridLayout(8, 8));
+		panel.setPreferredSize(new Dimension(600, 600));
+		panel.removeAll();
+		for(int i = 7; i >= 0; i--) {
+			for(int j = 0; j < 8; j++) {
+				ChessButton grid = new ChessButton(j, i);
+				
+				grid.setPiece(board.getPiece(j, i));
 				panel.add(grid);
 			}
 		}
