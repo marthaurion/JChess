@@ -24,6 +24,7 @@ public class Player implements ActionListener {
 	private int sourceX;
 	private int sourceY;
 	private PlayerProxy proxy;
+	private boolean online;
 	
 	/**
 	 * Constructor links the controller to a view and a model.
@@ -31,16 +32,21 @@ public class Player implements ActionListener {
 	 * @param b Board object that will act as a model for the controller.
 	 * @throws IOException 
 	 */
-	public Player() throws IOException {
+	public Player(boolean on) throws IOException {
 		board = new Board();
 		sourceX = -1;
 		sourceY = -1;
-		proxy = new PlayerProxy(this);
-		color = proxy.startGame(); //initialize the proxy
-		System.out.println(color.toString());
+		online = on;
+		
+		//only use the proxy if it's an online game
+		if(online) {
+			proxy = new PlayerProxy(this);
+			color = proxy.startGame(); //initialize the proxy
+		}
+		
 		display = new BasicDisplay(board, this);
 		display.initialize(color == PieceColor.Black);
-		if(color == PieceColor.Black) {
+		if(online && color == PieceColor.Black) {
 			Move m = proxy.getMove();
 			
 			board.makeMove(m);
@@ -104,7 +110,7 @@ public class Player implements ActionListener {
 				if(flag) {
 					try {
 						//send the move to the player first because making the move changes the move data
-						proxy.sendMessage(m);
+						if(online) proxy.sendMessage(m);
 						
 						//make the move
 						board.makeMove(m);
@@ -119,15 +125,17 @@ public class Player implements ActionListener {
 						//then check for endgame conditions
 						if(temp != 2) endGame(temp);
 						
-						//get the other player's move and make it
-						m = proxy.getMove();
-						board.makeMove(m);
-						temp = board.gameState();
-						
-						//update display
-						display.displayMoves();
-						display.displayBoard();
-						
+						//get the other player's move and make it if we're playing an online game
+						if(online) {
+							m = proxy.getMove();
+							board.makeMove(m);
+							temp = board.gameState();
+							
+							//update display
+							display.displayMoves();
+							display.displayBoard();
+							if(temp != 2) endGame(temp);
+						}
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
