@@ -28,8 +28,7 @@ public class Player implements ActionListener {
 	
 	/**
 	 * Constructor links the controller to a view and a model.
-	 * @param d BasicDisplay object that will act as the view for the controller.
-	 * @param b Board object that will act as a model for the controller.
+	 * @param on - Boolean to indicate whether this player is an online player.
 	 * @throws IOException 
 	 */
 	public Player(boolean on) throws IOException {

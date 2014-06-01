@@ -7,17 +7,28 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import pieces.PieceColor;
 
-//how the server identifies every connection
+/**
+ * Used by the server to identify each incoming connection.
+ * @author marthaurion
+ *
+ */
 public class ServerPlayer extends Thread {
-	private ChessServer server;
+	private ServerGame game;
 	private ServerPlayer opponent;
+	private ServerPlayer turnPlayer;
 	private Socket socket;
 	private BufferedReader input;
 	private PieceColor color;
 	private PrintWriter output;
 
-	public ServerPlayer(ChessServer server, Socket socket, PieceColor color) {
-		this.server = server;
+	/**
+	 * Constructor for the server player. Assigns all variables and sends a PieceColor to the player connection.
+	 * @param game - Game object used to send messages to the other player.
+	 * @param socket - Connection used for messages.
+	 * @param color - PieceColor linked to this player.
+	 */
+	public ServerPlayer(ServerGame game, Socket socket, PieceColor color) {
+		this.game = game;
 		this.socket = socket;
 		this.color = color;
 		try {
@@ -28,37 +39,56 @@ public class ServerPlayer extends Thread {
 		} catch (IOException e) {
 			System.out.println("Player died: " + e);
 		}
+		if(this.color == PieceColor.White) turnPlayer = this;
+		else turnPlayer = null;
 	}
 	
-	//Accepts notification of who the opponent is.
+	/**
+	 * Accepts notification of who the opponent is.
+	 * @param opponent - the other player
+	 */
 	public void setOpponent(ServerPlayer opponent) {
 		this.opponent = opponent;
+		if(turnPlayer == null) turnPlayer = opponent;
 	}
 	
-	//get functions
+	/**
+	 * Get function to return the opponent for this player.
+	 * @return - ServerPlayer that is the opponent for this player.
+	 */
 	public ServerPlayer getOpponent() {
 		return opponent;
 	}
 	
+	/**
+	 * Get function to return the PieceColor of this player.
+	 * @return - PieceColor that this player is playing.
+	 */
 	public PieceColor getColor() {
 		return color;
 	}
 	
+	/**
+	 * Send the player's move to this player's connection.
+	 * @param location - Message to be sent to the player.
+	 */
 	public void otherPlayerMoved(String location) {
 		output.println(location);
 		System.out.println("Move sent.");
 	}
 	
+	/**
+	 * Repeatedly get commands from the client and process them.
+	 */
 	public void run() {
 		try {
-			// Repeatedly get commands from the client and process them.
 			while (true) {
 				String command = input.readLine();
 				System.out.println(command);
 				if (!command.contains("Resign") && command.contains(color.toString())) {
-					server.sendMove(command, this);
+					game.sendMove(command, this);
 				} else {
-					server.sendMove(command, this);
+					game.sendMove(command, this);
 					return;
 				}
 			}

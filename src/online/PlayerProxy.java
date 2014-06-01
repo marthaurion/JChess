@@ -10,6 +10,11 @@ import controller.Player;
 import board.Move;
 import pieces.PieceColor;
 
+/**
+ * Arbitrates the communication between the controller and the server.
+ * @author marthaurion
+ *
+ */
 public class PlayerProxy {
 	
 	private Socket socket;
@@ -17,6 +22,10 @@ public class PlayerProxy {
 	private BufferedReader input;
 	private Player player;
 	
+	/**
+	 * Constructor to initialize variables.
+	 * @param p - Player (controller) linked to the proxy
+	 */
 	public PlayerProxy(Player p) {
 		socket = null;
 		output = null;
@@ -24,7 +33,10 @@ public class PlayerProxy {
 		player = p;
 	}
 	
-	//start game with the server and return the piece color assigned
+	/**
+	 * Creates the link with the server and starts the game.
+	 * @return PieceColor assigned to the player making the request
+	 */
 	public PieceColor startGame() {
 		String color = null;
 		
@@ -41,6 +53,11 @@ public class PlayerProxy {
 		return PieceColor.fromString(color);
 	}
 	
+	/**
+	 * Reads a move from the server and translates into a move.
+	 * @return Move object corresponding to the move from the server.
+	 * @throws IOException
+	 */
 	public Move getMove() throws IOException {
 		String fromServer = input.readLine();
 		System.out.println("Move received.");
@@ -48,11 +65,20 @@ public class PlayerProxy {
 		return Move.fromString(fromServer, player.getBoard());
 	}
 	
+	/**
+	 * Send a move to the server from the player
+	 * @param p - Move object indicating the move the player just made.
+	 * @throws IOException
+	 */
 	public void sendMessage(Move p) throws IOException {
 		System.out.println("Sent move: " + p.toString());
 		output.println(p.toString());
 	}
 	
+	/**
+	 * Basically acts as a deconstructor to close all connections when the game is done.
+	 * @throws IOException
+	 */
 	public void endGame() throws IOException {
 		socket.close();
 		input.close();
