@@ -108,8 +108,8 @@ public class Player implements ActionListener {
 				//make the move if legal and the color of the piece matches the player
 				if(flag) {
 					try {
-						//send the move to the player first because making the move changes the move data
-						if(online) proxy.sendMessage(m);
+						//store the move as a string because making the move on the board alters it
+						String move = m.toString();
 						
 						//make the move
 						board.makeMove(m);
@@ -121,11 +121,14 @@ public class Player implements ActionListener {
 						display.displayMoves();
 						display.displayBoard();
 						
+						//send the move after updating the board
+						if(online) proxy.sendMessage(move);
+						
 						//then check for endgame conditions
 						if(temp != 2) endGame(temp);
 						
 						//get the other player's move and make it if we're playing an online game
-						if(online) {
+						if(online && temp == 2) {
 							m = proxy.getMove();
 							board.makeMove(m);
 							temp = board.gameState();

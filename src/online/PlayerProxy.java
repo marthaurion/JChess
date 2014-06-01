@@ -67,16 +67,16 @@ public class PlayerProxy {
 	
 	/**
 	 * Send a move to the server from the player
-	 * @param p - Move object indicating the move the player just made.
+	 * @param move - String indicating the move the player just made.
 	 * @throws IOException
 	 */
-	public void sendMessage(Move p) throws IOException {
-		System.out.println("Sent move: " + p.toString());
-		output.println(p.toString());
+	public void sendMessage(String move) throws IOException {
+		System.out.println("Sent move: " + move);
+		output.println(move);
 	}
 	
 	/**
-	 * Basically acts as a deconstructor to close all connections when the game is done.
+	 * Close all connections when the game is done.
 	 * @throws IOException
 	 */
 	public void endGame() throws IOException {
