@@ -201,6 +201,13 @@ public class BasicDisplay {
 	}
 	
 	/**
+	 * Displays an error message when an incorrect move is made.
+	 */
+	public void invalid() {
+		JOptionPane.showMessageDialog(frame, "Invalid move! Try a legal one this time.");
+	}
+	
+	/**
 	 * Remove borders on every square on the board.
 	 * This might be more efficient than getting legal moves and deactivating them.
 	 */

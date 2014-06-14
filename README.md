@@ -18,7 +18,7 @@ Things that are done:
 - Added some fancy Javadocs.
 
 Known Issues:
-- Frame is disposed for black when white makes its first move. This is disruptive, as the window closes, then re-opens.
+- Frame is disposed for black when white makes its first move in the online version. This is disruptive, as the window closes, then re-opens.
 - Certain moves cause errors to occur. This needs to be tested more extensively.
 
 General Testing:

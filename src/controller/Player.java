@@ -145,6 +145,7 @@ public class Player implements ActionListener {
 				//endif flag
 				else {
 					System.out.println("Invalid move"); //for debug
+					display.invalid();
 					display.clearBoard();
 				}
 			}
