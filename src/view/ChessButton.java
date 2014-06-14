@@ -61,7 +61,7 @@ public class ChessButton extends JButton {
 			System.exit(0);
 		}
 		
-		setIcon(new ImageIcon(st));
+		setIcon(new ImageIcon(getClass().getResource(st)));
 			
 	}
 	

@@ -55,7 +55,7 @@ public class Player implements ActionListener {
 	}
 	
 	public void endGame(int state) throws IOException {
-		proxy.endGame(); //close connections
+		if(online) proxy.endGame(); //close connections
 		if(state == 1) display.endGame(PieceColor.White);
 		else if(state == -1) display.endGame(PieceColor.Black);
 		else if(state == 0) display.endGame(PieceColor.None);
