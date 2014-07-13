@@ -16,10 +16,12 @@ Things that are done:
 - Stops the player from leaving the king in check.
 - Highlights possible moves in blue for the turn player.
 - Added some fancy Javadocs.
+- Created an AI that picks random moves.
 
 Known Issues:
 - Frame is disposed for black when white makes its first move in the online version. This is disruptive, as the window closes, then re-opens.
 - Certain moves cause errors to occur. This needs to be tested more extensively.
+- AI will not protect its king when its in check. Either need to make it so that it can't add those moves as legal or check before making the move.
 
 General Testing:
 - Need to keep testing castling, en passant, and checkmate detection for bugs.
@@ -29,7 +31,6 @@ General Testing:
 Things to be done:
 - Add disambiguation for knights and rooks on the move list.
 - Add better pawn promotion.
-- Create an AI.
 - Make it an app.
 - Go through the code and make sure everything is well-documented. Keep Javadocs updated.
 - Might want to change the attack map to be its own class instead of a 2D array of ints.

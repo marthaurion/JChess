@@ -1,5 +1,6 @@
 package board;
 import java.util.ArrayList;
+import java.util.Random;
 
 import pieces.Bishop;
 import pieces.King;
@@ -68,6 +69,15 @@ public class Board {
      */
     public Piece getPiece(int x, int y) {
     	return board[y][x];
+    }
+    
+    /**
+     * Get a piece on the board based on a Square object.
+     * @param s Square object signifying the location for the piece we want.
+     * @return Piece object on that square.
+     */
+    public Piece getPiece(Square s) {
+    	return this.getPiece(s.getX(), s.getY());
     }
     
     /**
@@ -625,5 +635,39 @@ public class Board {
     		if(mate) moveList.set(x, moveList.get(x) + "#");
     		else moveList.set(x, moveList.get(x)+"+");
     	}
+    }
+    
+    /**
+     * Generates a random move for one of the players on the board out of all possible moves.
+     * This is the first "AI".
+     * @param color PieceColor for the side of the board to find moves.
+     * @return Move object for a random legal move.
+     */
+    public Move getRandomMove(PieceColor color) {
+    	ArrayList<Piece> pieces = getPieces(color);
+    	ArrayList<Move> moves = new ArrayList<Move>();
+    	Piece temp;
+    	ArrayList<Square> squares;
+    	Random rand = new Random();
+    	
+    	//loop through each of the pieces on the board for a color
+    	//and add its list of legal moves to the total move list
+    	for(int i = 0; i < pieces.size(); ++i) {
+    		temp = pieces.get(i);
+    		squares = temp.getLegalMoves();
+    		if(squares == null || squares.size() < 1) continue; //skip this piece if there are no legal moves
+    		
+    		//after we grab all of the legal squares, we need to translate them into moves
+    		for(int j = 0; j < squares.size(); ++j) {
+    			//create a move for this piece to each of the target squares
+    			moves.add(new Move(temp, this.getPiece(squares.get(j))));
+    		}
+    	}
+    	
+    	//if we don't find any legal moves, return null
+    	//(this shouldn't happen because we should end the game before that happens)
+    	if(moves.size() < 1) return null;
+    	//otherwise return a random move in the list of legal moves
+    	else return moves.get(rand.nextInt(moves.size()));
     }
 }

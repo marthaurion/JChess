@@ -25,17 +25,23 @@ public class Player implements ActionListener {
 	private int sourceY;
 	private PlayerProxy proxy;
 	private boolean online;
+	private boolean computer;
 	
 	/**
 	 * Constructor links the controller to a view and a model.
 	 * @param on - Boolean to indicate whether this player is an online player.
+	 * @param com - Boolean to indicate whether we want to play against a computer.
 	 * @throws IOException 
 	 */
-	public Player(boolean on) throws IOException {
+	public Player(boolean on, boolean com) throws IOException {
 		board = new Board();
 		sourceX = -1;
 		sourceY = -1;
 		online = on;
+		
+		//if it's an online game, we won't use a computer for now
+		if(online) computer = false;
+		else computer = com;
 		
 		//only use the proxy if it's an online game
 		if(online) {
@@ -52,6 +58,8 @@ public class Player implements ActionListener {
 			
 			display.initialize(false);
 		}
+		
+		if(computer) color = PieceColor.White; //for now, let the player be white
 	}
 	
 	public void endGame(int state) throws IOException {
@@ -127,9 +135,11 @@ public class Player implements ActionListener {
 						//then check for endgame conditions
 						if(temp != 2) endGame(temp);
 						
-						//get the other player's move and make it if we're playing an online game
-						if(online && temp == 2) {
-							m = proxy.getMove();
+						//special cases where we don't make the next move locally
+						if(online || computer) {
+							if(online) m = proxy.getMove(); //get the other player's move and make it if we're playing an online game
+							else m = board.getRandomMove(PieceColor.opposite(color)); //get random move for computer otherwise
+							if(m == null) System.out.println("MOVE WAS NULL"); //debug line
 							board.makeMove(m);
 							temp = board.gameState();
 							
