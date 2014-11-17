@@ -19,6 +19,7 @@ Things that are done:
 - Created an AI that picks random moves.
 
 Known Issues:
+- Computer player doesn't protect his own king. There needs to be more error checking for computer moves.
 - Frame is disposed for black when white makes its first move in the online version. This is disruptive, as the window closes, then re-opens.
 - Certain moves cause errors to occur. This needs to be tested more extensively.
 - AI will not protect its king when its in check. Either need to make it so that it can't add those moves as legal or check before making the move.
